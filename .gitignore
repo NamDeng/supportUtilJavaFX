@@ -1,0 +1,17 @@
+# setting
+.classpath
+.project
+.settings/
+
+# build
+/build/build/
+/build/deploy
+/build/dist/
+/build/externalLibs/
+/build/project/
+/build/projectRefs/
+/build/build.xml
+
+/bin
+/resources
+

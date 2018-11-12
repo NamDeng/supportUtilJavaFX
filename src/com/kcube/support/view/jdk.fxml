@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.ListView?>
+<?import javafx.scene.control.TextArea?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.layout.Pane?>
+
+<AnchorPane prefHeight="800.0" prefWidth="1000.0" xmlns="http://javafx.com/javafx/8.0.141" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.kcube.support.jdk.JDKController">
+   <children>
+      <Pane layoutX="89.0" layoutY="25.0" />
+      <ListView fx:id="fileList" layoutX="123.0" layoutY="83.0" onDragDropped="#onDragDropFile" onDragOver="#onDragOver" prefHeight="637.0" prefWidth="392.0" />
+      <Button layoutX="795.0" layoutY="750.0" mnemonicParsing="false" onAction="#moveMainPage" prefHeight="36.0" prefWidth="191.0" styleClass="main-btn-blue" text="초기화면으로 이동" />
+      <Button layoutX="5.0" layoutY="84.0" mnemonicParsing="false" onAction="#addFiles" prefHeight="40.0" prefWidth="112.0" styleClass="support-btn" text="파일 선택" />
+      <Label styleClass="support-label" layoutX="530.0" layoutY="35.0" prefHeight="44.0" prefWidth="112.0" text="실행 결과" />
+      <TextArea fx:id="resultArea" editable="false" layoutX="527.0" layoutY="83.0" prefHeight="637.0" prefWidth="461.0" />
+      <Label styleClass="support-label" layoutX="123.0" layoutY="36.0" prefHeight="44.0" prefWidth="112.0" text="파일 목록" />
+      <Button layoutX="5.0" layoutY="129.0" mnemonicParsing="false" onAction="#deleteFiles" prefHeight="40.0" prefWidth="112.0" styleClass="support-btn" text="파일 삭제" />
+   </children>
+</AnchorPane>

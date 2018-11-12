@@ -1,0 +1,153 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.RadioButton?>
+<?import javafx.scene.control.TextArea?>
+<?import javafx.scene.control.TextField?>
+<?import javafx.scene.control.ToggleGroup?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.Pane?>
+<?import javafx.scene.layout.VBox?>
+
+<AnchorPane prefHeight="800.0" prefWidth="1000.0" xmlns="http://javafx.com/javafx/8.0.141" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.kcube.support.cipher.CipherController">
+   <children>
+      <Pane layoutX="89.0" layoutY="25.0" />
+      <Pane layoutX="252.0" layoutY="294.0" prefHeight="81.0" prefWidth="768.0">
+         <children>
+            <TextField fx:id="aesField" layoutY="31.0" prefHeight="43.0" prefWidth="375.0" />
+            <TextField fx:id="secureKeyField" layoutX="383.0" layoutY="31.0" prefHeight="43.0" prefWidth="235.0" />
+            <Button fx:id="aesBtn" layoutX="630.0" layoutY="31.0" mnemonicParsing="false" onAction="#printAESResult" prefHeight="43.0" prefWidth="113.0" text="AES 변환" />
+            <Label layoutX="384.0" layoutY="-10.0" prefHeight="43.0" prefWidth="180.0" styleClass="support-label" text="양방향 개인키 :" />
+            <Label styleClass="support-label" text="AES 변환값 입력 :" />
+         </children>
+      </Pane>
+      <Button layoutX="802.0" layoutY="750.0" mnemonicParsing="false" onAction="#moveMainPage" prefHeight="36.0" prefWidth="191.0" styleClass="main-btn-blue" text="초기화면으로 이동" />
+      <HBox layoutX="7.0" layoutY="139.0" prefHeight="119.0" prefWidth="235.0">
+         <children>
+            <VBox prefHeight="595.0" prefWidth="224.0" style="-fx-border-style: solid;">
+               <children>
+                  <Label alignment="CENTER" contentDisplay="TOP" prefHeight="40.0" prefWidth="222.0" style="-fx-border-style: solid;" styleClass="support-label" text="인코딩" />
+                  <RadioButton fx:id="base64Encoder" contentDisplay="CENTER" mnemonicParsing="false" prefHeight="33.0" prefWidth="220.0" selected="true" styleClass="support-label" text="Base64(인코딩)">
+                     <padding>
+                        <Insets left="10.0" top="10.0" />
+                     </padding>
+                     <toggleGroup>
+                        <ToggleGroup fx:id="base64Group" />
+                     </toggleGroup>
+                  </RadioButton>
+                  <RadioButton fx:id="base64Decoder" contentDisplay="CENTER" mnemonicParsing="false" prefHeight="33.0" prefWidth="221.0" styleClass="support-label" text="Base64(디코딩)" toggleGroup="$base64Group">
+                     <padding>
+                        <Insets left="10.0" top="10.0" />
+                     </padding>
+                  </RadioButton>
+               </children>
+            </VBox>
+         </children>
+      </HBox>
+      <Label fx:id="infoLabel" layoutX="10.0" layoutY="8.0" prefHeight="43.0" prefWidth="991.0" style="-fx-border-color: black;" styleClass="support-label" text="AES 알고리즘은 암복호화에 키가 필요합니다. 키 길이는 알고리즘 비트수와 동일합니다. (AES-128 - 16byte, AES-192 - 24byte, AES-256 - 32byte)" wrapText="true" />
+      <HBox layoutX="7.0" layoutY="268.0" prefHeight="190.0" prefWidth="235.0">
+         <children>
+            <VBox prefHeight="176.0" prefWidth="224.0" style="-fx-border-style: solid;">
+               <children>
+                  <Label alignment="CENTER" contentDisplay="TOP" prefHeight="40.0" prefWidth="222.0" style="-fx-border-style: solid;" styleClass="support-label" text="단방향 암호화 알고리즘">
+                     <VBox.margin>
+                        <Insets />
+                     </VBox.margin>
+                  </Label>
+                  <RadioButton fx:id="sha224Encryption" contentDisplay="CENTER" mnemonicParsing="false" prefHeight="33.0" prefWidth="220.0" selected="true" styleClass="support-label" text="SHA-224암호화)">
+                     <padding>
+                        <Insets left="10.0" top="10.0" />
+                     </padding>
+                     <toggleGroup>
+                        <ToggleGroup fx:id="shaGroup" />
+                     </toggleGroup>
+                  </RadioButton>
+                  <RadioButton fx:id="sha256Encryption" contentDisplay="CENTER" mnemonicParsing="false" prefHeight="33.0" prefWidth="220.0" selected="true" styleClass="support-label" text="SHA-256(암호화)" toggleGroup="$shaGroup">
+                     <padding>
+                        <Insets left="10.0" top="10.0" />
+                     </padding>
+                  </RadioButton>
+                  <RadioButton fx:id="sha384Encryption" contentDisplay="CENTER" mnemonicParsing="false" prefHeight="33.0" prefWidth="220.0" selected="true" styleClass="support-label" text="SHA-384(암호화)" toggleGroup="$shaGroup">
+                     <padding>
+                        <Insets left="10.0" top="10.0" />
+                     </padding>
+                  </RadioButton>
+                  <RadioButton fx:id="sha512Encryption" contentDisplay="CENTER" mnemonicParsing="false" prefHeight="33.0" prefWidth="220.0" selected="true" styleClass="support-label" text="SHA-512(암호화)" toggleGroup="$shaGroup">
+                     <padding>
+                        <Insets left="10.0" top="10.0" />
+                     </padding>
+                  </RadioButton>
+               </children>
+            </VBox>
+         </children>
+      </HBox>
+      <HBox layoutX="7.0" layoutY="467.0" prefHeight="251.0" prefWidth="235.0">
+         <children>
+            <VBox prefHeight="595.0" prefWidth="224.0" style="-fx-border-style: solid;">
+               <children>
+                  <Label alignment="CENTER" contentDisplay="TOP" prefHeight="40.0" prefWidth="222.0" style="-fx-border-style: solid;" styleClass="support-label" text="양방향 암호화 알고리즘">
+                     <VBox.margin>
+                        <Insets />
+                     </VBox.margin>
+                  </Label>
+                  <RadioButton fx:id="aes128Encryption" contentDisplay="CENTER" mnemonicParsing="false" prefHeight="33.0" prefWidth="220.0" selected="true" styleClass="support-label" text="AES-128(암호화)">
+                     <padding>
+                        <Insets left="10.0" top="10.0" />
+                     </padding>
+                     <toggleGroup>
+                        <ToggleGroup fx:id="aesGroup" />
+                     </toggleGroup>
+                  </RadioButton>
+                  <RadioButton fx:id="aes128Decryption" contentDisplay="CENTER" mnemonicParsing="false" prefHeight="33.0" prefWidth="221.0" styleClass="support-label" text="AES-128(복호화)" toggleGroup="$aesGroup">
+                     <padding>
+                        <Insets left="10.0" top="10.0" />
+                     </padding>
+                  </RadioButton>
+                  <RadioButton fx:id="aes192Encryption" contentDisplay="CENTER" mnemonicParsing="false" prefHeight="33.0" prefWidth="220.0" selected="true" styleClass="support-label" text="AES-192(암호화)" toggleGroup="$aesGroup">
+                     <padding>
+                        <Insets left="10.0" top="10.0" />
+                     </padding>
+                  </RadioButton>
+                  <RadioButton fx:id="aes192Decryption" contentDisplay="CENTER" mnemonicParsing="false" prefHeight="33.0" prefWidth="221.0" styleClass="support-label" text="AES-192(복호화)" toggleGroup="$aesGroup">
+                     <padding>
+                        <Insets left="10.0" top="10.0" />
+                     </padding>
+                  </RadioButton>
+                  <RadioButton fx:id="aes256Encryption" contentDisplay="CENTER" mnemonicParsing="false" prefHeight="33.0" prefWidth="220.0" selected="true" styleClass="support-label" text="AES-256(암호화)" toggleGroup="$aesGroup">
+                     <padding>
+                        <Insets left="10.0" top="10.0" />
+                     </padding>
+                  </RadioButton>
+                  <RadioButton fx:id="aes256Decryption" contentDisplay="CENTER" mnemonicParsing="false" prefHeight="33.0" prefWidth="221.0" styleClass="support-label" text="AES-256(복호화)" toggleGroup="$aesGroup">
+                     <padding>
+                        <Insets left="10.0" top="10.0" />
+                     </padding>
+                  </RadioButton>
+               </children>
+            </VBox>
+         </children>
+      </HBox>
+      <Pane layoutX="238.0" layoutY="122.0" prefHeight="71.0" prefWidth="768.0">
+         <children>
+            <TextField fx:id="base64Field" layoutX="14.0" layoutY="15.0" prefHeight="43.0" prefWidth="746.0" />
+            <Label layoutX="14.0" layoutY="-11.0" styleClass="support-label" text="Base64 변환값 입력 :" />
+         </children>
+      </Pane>
+      <Pane layoutX="252.0" layoutY="203.0" prefHeight="89.0" prefWidth="746.0">
+         <children>
+            <TextField fx:id="shaField" layoutY="23.0" prefHeight="43.0" prefWidth="746.0" />
+            <Label styleClass="support-label" text="SHA 변환값 입력 :" />
+         </children>
+      </Pane>
+      <Pane layoutX="252.0" layoutY="391.0" prefHeight="336.0" prefWidth="746.0">
+         <children>
+            <TextArea fx:id="resultArea" editable="false" layoutY="35.0" prefHeight="294.0" prefWidth="746.0" />
+            <Label layoutY="8.0" styleClass="support-label" text="변환 결과:" />
+         </children>
+      </Pane>
+      <Label layoutX="55.0" layoutY="57.0" text="Label" />
+   </children>
+</AnchorPane>
