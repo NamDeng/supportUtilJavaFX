@@ -17,5 +17,10 @@
             <Button alignment="CENTER" mnemonicParsing="false" onAction="#moveCipherPage" prefHeight="235.0" prefWidth="235.0" styleClass="main-btn" text="암복호화 " />
          </buttons>
       </ButtonBar>
+      <ButtonBar layoutX="29.0" layoutY="332.0" prefHeight="200.0" prefWidth="725.0">
+         <buttons>
+            <Button alignment="CENTER" mnemonicParsing="false" onAction="#movePatchPage" prefHeight="235.0" prefWidth="235.0" styleClass="main-btn" text="패치파일 생성기" />
+         </buttons>
+      </ButtonBar>
    </children>
 </AnchorPane>

@@ -7,9 +7,10 @@ public class Support {
 	public static final String MAIN_LAYOUT_URL = "../view/layout.fxml";
 	public static final String MAIN_CSS_URL = "../view/layout.fxml";
 
-	public static final String CIPER_PAGE_URL = "../view/cipher.fxml";
 	public static final String JDK_PAGE_URL = "../view/jdk.fxml";
 	public static final String UNICODE_PAGE_URL = "../view/unicode.fxml";
+	public static final String CIPER_PAGE_URL = "../view/cipher.fxml";
+	public static final String PATCH_PAGE_URL = "../view/patch.fxml";
 
 
 }

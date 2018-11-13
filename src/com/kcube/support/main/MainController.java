@@ -25,11 +25,20 @@ public class MainController {
 	}
 
 	/**
-	 * 암복호화 모듈 화면으로 이동
+	 * 암복호화 화면으로 이동
 	 *
 	 * @param event
 	 */
 	public void moveCipherPage(ActionEvent event) {
 		MainStage.showChangePage(Support.CIPER_PAGE_URL);
+	}
+
+	/**
+	 * 패치 준비 화면으로 이동
+	 *
+	 * @param event
+	 */
+	public void movePatchPage(ActionEvent event) {
+		MainStage.showChangePage(Support.PATCH_PAGE_URL);
 	}
 }
