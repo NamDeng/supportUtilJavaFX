@@ -30,10 +30,26 @@ public class AlertUtil {
 		alert.showAndWait();
 	}
 
+	public static void showAndWaitForWarning(final String content) {
+		Alert alert = new Alert(AlertType.WARNING, content);
+		alert.setTitle(Support.TITLE);
+		alert.setHeaderText("Warning!");
+
+		alert.showAndWait();
+	}
+
 	public static void showAndWaitForWarning(final String header, final String content) {
 		Alert alert = new Alert(AlertType.WARNING, content);
 		alert.setTitle(Support.TITLE);
 		alert.setHeaderText(header);
+
+		alert.showAndWait();
+	}
+
+	public static void showAndWaitForError(final String content) {
+		Alert alert = new Alert(AlertType.ERROR, content);
+		alert.setTitle(Support.TITLE);
+		alert.setHeaderText("Error!");
 
 		alert.showAndWait();
 	}
