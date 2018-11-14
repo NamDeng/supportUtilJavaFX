@@ -1,9 +1,6 @@
 package com.kcube.support.jdk;
 
-import java.io.DataInputStream;
 import java.io.File;
-import java.io.FileInputStream;
-import java.nio.file.Paths;
 import java.util.List;
 
 import com.kcube.support.Support;
@@ -53,35 +50,11 @@ public class JDKController {
 	 */
 	private void print() {
 		final int size = fileList.getItems().size();
-
-		if (size != 0) {
+		if (size > 0) {
 			final StringBuilder stringBuilder = new StringBuilder();
 			for (int i = 0; i < size; i++) {
 				final String path = fileList.getItems().get(i);
-				if (path != null && path.length() != 0) {
-
-					try (DataInputStream in = new DataInputStream(new FileInputStream(path));) {
-
-						int magicNum = in.readInt();
-						if (magicNum != 0xcafebabe) {
-							stringBuilder.append(Paths.get(path).getFileName());
-							stringBuilder.append(" : 유효하지 않은 클래스 파일입니다.");
-							stringBuilder.append(System.getProperty("line.separator"));
-							resultArea.setText(stringBuilder.toString());
-
-							continue;
-						}
-						@SuppressWarnings("unused")
-						final int minorVersion = in.readUnsignedShort();
-						final int majorVersion = in.readUnsignedShort();
-						stringBuilder.append(Paths.get(path).getFileName());
-						stringBuilder.append(" : ");
-						stringBuilder.append(JDK.getVersion(majorVersion));
-						stringBuilder.append(System.getProperty("line.separator"));
-					} catch (Exception e) {
-						resultArea.setText(e.getMessage());
-					}
-				}
+				stringBuilder.append(JDK.getClassFileVersion(path));
 			}
 			resultArea.setText(stringBuilder.toString());
 		} else {
@@ -125,9 +98,7 @@ public class JDKController {
 			success = true;
 			for (File file : board.getFiles()) {
 				final String path = file.getAbsolutePath();
-				final String ext = path.substring(path.lastIndexOf(".") + 1);
-
-				if(!ext.equals("class"))
+				if(!JDK.isClassFile(path))
 					AlertUtil.showAndWaitForError(file.getName(), "파일을 추가할 수 없습니다. \nclass 파일만 추가할 수 있습니다.");
 
 				fileList.getItems().add(path);
@@ -143,7 +114,6 @@ public class JDKController {
 	 * @param event
 	 */
 	public void addFiles(ActionEvent event) {
-
 		FileChooser fileChooser = new FileChooser();
 		fileChooser.setTitle("Class 파일 탐색기");
 		fileChooser.setInitialDirectory(new File("C:\\"));

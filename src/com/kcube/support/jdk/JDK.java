@@ -1,7 +1,11 @@
 package com.kcube.support.jdk;
 
+import java.io.DataInputStream;
+import java.io.FileInputStream;
+import java.nio.file.Paths;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.StringJoiner;
 
 import com.kcube.support.util.AlertUtil;
 
@@ -27,4 +31,35 @@ public class JDK {
 
 		return version.get(majorVersion);
 	}
+
+	public static boolean isClassFile(String path) {
+		int lastIndexOf = path.lastIndexOf(".");
+		if(lastIndexOf == -1)
+			return false;
+		if(!path.substring(lastIndexOf + 1).equals("class"))
+			return false;
+		return true;
+	}
+
+	public static String getClassFileVersion(final String path) {
+		final StringJoiner stringJoiner = new StringJoiner(" : ");
+		try (DataInputStream in = new DataInputStream(new FileInputStream(path));) {
+			int magicNum = in.readInt();
+			if (magicNum != 0xcafebabe) {
+				stringJoiner.add(Paths.get(path).getFileName().toString());
+				stringJoiner.add("올바르지 않은 파일입니다." + System.getProperty("line.separator"));
+
+				return stringJoiner.toString();
+			}
+			@SuppressWarnings("unused")
+			final int minorVersion = in.readUnsignedShort();
+			final int majorVersion = in.readUnsignedShort();
+			stringJoiner.add(Paths.get(path).getFileName().toString());
+			stringJoiner.add(getVersion(majorVersion) + System.getProperty("line.separator"));
+		} catch (Exception e) {
+			return e.getMessage();
+		}
+		return stringJoiner.toString();
+	}
 }
+
