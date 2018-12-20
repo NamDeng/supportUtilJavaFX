@@ -91,6 +91,8 @@ public class PatchController {
 	 * @throws Exception
 	 */
 	public void makePatchFile(ActionEvent event) throws Exception {
+		resultArea.setText("");
+
 		final String sourcePath = sourcePathField.getText();
 		final String destPath = destPathField.getText();
 		final String projectName = projectField.getText();
