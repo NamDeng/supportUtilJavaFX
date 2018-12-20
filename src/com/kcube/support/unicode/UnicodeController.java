@@ -170,8 +170,10 @@ public class UnicodeController {
 	 */
 	public void printConvertedCharacter() {
 		final String path = filePathField.getText();
-		if (StringUtils.isEmpty(path))
+		if (StringUtils.isEmpty(path)) {
 			AlertUtil.showAndWaitForWarning("파일 선택", "선택된 파일이 없습니다.");
+			return;
+		}
 
 		final StringBuilder stringBuilder = new StringBuilder();
 
@@ -232,13 +234,17 @@ public class UnicodeController {
 
 			int cnt = 0;
 			for (File file : board.getFiles()) {
-				if(cnt != 0)
+				if (cnt != 0) {
 					AlertUtil.showAndWaitForWarning("파일 추가 실패", "한개의 properties 파일만 추가 가능합니다");
+					return;
+				}
 
 				final String path = file.getAbsolutePath();
 				final String ext = path.substring(path.lastIndexOf(".") + 1);
-				if (!ext.equals("properties"))
+				if (!ext.equals("properties")) {
 					AlertUtil.showAndWaitForError(file.getName(), "파일 추가 실패. \nproperties 파일만 추가할 수 있습니다.");
+					return;
+				}
 
 				filePathField.setText(path);
 				cnt++;

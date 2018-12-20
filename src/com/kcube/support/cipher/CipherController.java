@@ -111,8 +111,7 @@ public class CipherController {
 	/**
 	 * 리스너 초기화
 	 */
-	private void initListener(){
-
+	private void initListener() {
 		base64Field.textProperty().addListener((observable, oldValue, newValue) -> {
 			resultArea.setText(convertBase64(newValue));
 		});
@@ -152,7 +151,7 @@ public class CipherController {
 	 */
 	public void printBase64Result(ActionEvent event) throws Exception {
 		final String input = base64Field.getText();
-		if(StringUtils.isEmpty(input))
+		if (StringUtils.isEmpty(input))
 			AlertUtil.showAndWaitForWarning("변환결과 조회", "변환값을 입력하지 않았습니다.");
 
 		final String result = convertBase64(input);
@@ -166,7 +165,7 @@ public class CipherController {
 	 * @return
 	 * @throws UnsupportedEncodingException
 	 */
-	private String convertBase64(final String input){
+	private String convertBase64(final String input) {
 		String result = null;
 		try {
 			if (base64Encoder.isSelected()) {
@@ -209,7 +208,7 @@ public class CipherController {
 	 * @return
 	 * @throws Exception
 	 */
-	private String convertSHA(final String input){
+	private String convertSHA(final String input) {
 		String type = "";
 		if (sha224Encryption.isSelected()) {
 			type = "SHA-224";
@@ -241,13 +240,9 @@ public class CipherController {
 
 		Crypto crypto = new AES(secureKey);
 		String result = null;
-		if (aes128Encryption.isSelected()
-				|| aes192Encryption.isSelected()
-				|| aes256Encryption.isSelected())  {
+		if (aes128Encryption.isSelected() || aes192Encryption.isSelected() || aes256Encryption.isSelected()) {
 			result = crypto.encrypt(input);
-		} else if (aes128Decryption.isSelected()
-				|| aes192Decryption.isSelected()
-				|| aes256Decryption.isSelected()) {
+		} else if (aes128Decryption.isSelected() || aes192Decryption.isSelected() || aes256Decryption.isSelected()) {
 			result = crypto.decrypt(input);
 		}
 		resultArea.setText(result);

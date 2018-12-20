@@ -42,12 +42,12 @@ public class AES implements Crypto {
 	public String decrypt(String cypherText) throws Exception {
 		try {
 			final Cipher cipher = Cipher.getInstance(ALGORITHM);
-	        cipher.init(Cipher.DECRYPT_MODE, secureKey);
+			cipher.init(Cipher.DECRYPT_MODE, secureKey);
 
-	        final byte[] cipherText = Base64.getDecoder().decode(cypherText.getBytes());
-	        final String decryptedString = new String(cipher.doFinal(cipherText), CHARSET_NAME);
+			final byte[] cipherText = Base64.getDecoder().decode(cypherText.getBytes());
+			final String decryptedString = new String(cipher.doFinal(cipherText), CHARSET_NAME);
 
-	        return decryptedString;
+			return decryptedString;
 		} catch (InvalidKeyException e) {
 			AlertUtil.showAndWaitForError("개인키 입력 에러", "입력한 키 길이가 올바르지 않습니다.");
 			return "";

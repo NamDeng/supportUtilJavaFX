@@ -98,7 +98,7 @@ public class JDKController {
 			success = true;
 			for (File file : board.getFiles()) {
 				final String path = file.getAbsolutePath();
-				if(!JDK.isClassFile(path))
+				if (!JDK.isClassFile(path))
 					AlertUtil.showAndWaitForError(file.getName(), "파일을 추가할 수 없습니다. \nclass 파일만 추가할 수 있습니다.");
 
 				fileList.getItems().add(path);
@@ -137,10 +137,7 @@ public class JDKController {
 		if (selectedIdx == -1)
 			AlertUtil.showAndWaitForWarning("파일 선택", "선택된 파일이 없습니다.");
 
-		final int newSelectedIdx =
-				(selectedIdx == fileList.getItems().size() - 1)
-				? selectedIdx - 1
-				: selectedIdx;
+		final int newSelectedIdx = (selectedIdx == fileList.getItems().size() - 1) ? selectedIdx - 1 : selectedIdx;
 
 		fileList.getItems().remove(selectedIdx);
 		fileList.getSelectionModel().select(newSelectedIdx);

@@ -26,21 +26,34 @@ public class JDK {
 	}
 
 	public static String getVersion(final int majorVersion) {
-		if(!version.containsKey(majorVersion))
-			AlertUtil.showAndWaitForError("jdk version error!", "jdk 버전이 존재하지 않습니다.");
+		if (!version.containsKey(majorVersion))
+			AlertUtil.showAndWaitForError("jdk version error!", "JDK 버전이 존재하지 않습니다.");
 
 		return version.get(majorVersion);
 	}
 
+	/**
+	 * Class파일인지 확인한다.
+	 *
+	 * @param path
+	 * @return
+	 */
 	public static boolean isClassFile(String path) {
 		int lastIndexOf = path.lastIndexOf(".");
-		if(lastIndexOf == -1)
+		if (lastIndexOf == -1)
 			return false;
-		if(!path.substring(lastIndexOf + 1).equals("class"))
+		if (!path.substring(lastIndexOf + 1).equals("class"))
 			return false;
+
 		return true;
 	}
 
+	/**
+	 * Class 파일의 JDK 버전을 가져온다.
+	 *
+	 * @param path
+	 * @return
+	 */
 	public static String getClassFileVersion(final String path) {
 		final StringJoiner stringJoiner = new StringJoiner(" : ");
 		try (DataInputStream in = new DataInputStream(new FileInputStream(path));) {
@@ -62,4 +75,3 @@ public class JDK {
 		return stringJoiner.toString();
 	}
 }
-
