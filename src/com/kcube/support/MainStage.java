@@ -1,8 +1,6 @@
-package com.kcube.support.main;
+package com.kcube.support;
 
 import java.io.IOException;
-
-import com.kcube.support.Support;
 
 import javafx.application.Application;
 import javafx.fxml.FXMLLoader;

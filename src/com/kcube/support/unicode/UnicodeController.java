@@ -13,8 +13,8 @@ import java.util.regex.Pattern;
 import org.apache.commons.lang3.StringEscapeUtils;
 import org.apache.commons.lang3.StringUtils;
 
+import com.kcube.support.MainStage;
 import com.kcube.support.Support;
-import com.kcube.support.main.MainStage;
 import com.kcube.support.util.AlertUtil;
 
 import javafx.beans.value.ChangeListener;

@@ -47,7 +47,7 @@
             </VBox>
          </children>
       </HBox>
-      <Label fx:id="infoLabel" layoutX="10.0" layoutY="8.0" prefHeight="43.0" prefWidth="991.0" style="-fx-border-color: black;" styleClass="support-label" text="AES 알고리즘은 암복호화에 키가 필요합니다. 키 길이는 알고리즘 비트수와 동일합니다. (AES-128 - 16byte, AES-192 - 24byte, AES-256 - 32byte)" wrapText="true" />
+      <Label fx:id="infoLabel" layoutX="10.0" layoutY="13.0" prefHeight="43.0" prefWidth="991.0" style="-fx-border-color: black;" styleClass="support-label" text=" AES 알고리즘은 암복호화에 키가 필요하며, 키 길이는 비트수와 동일합니다." wrapText="true" />
       <HBox layoutX="7.0" layoutY="268.0" prefHeight="190.0" prefWidth="235.0">
          <children>
             <VBox prefHeight="176.0" prefWidth="224.0" style="-fx-border-style: solid;">
@@ -148,6 +148,5 @@
             <Label layoutY="8.0" styleClass="support-label" text="변환 결과:" />
          </children>
       </Pane>
-      <Label layoutX="55.0" layoutY="57.0" text="Label" />
    </children>
 </AnchorPane>

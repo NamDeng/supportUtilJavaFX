@@ -7,8 +7,8 @@ import java.util.List;
 
 import org.apache.commons.lang3.StringUtils;
 
+import com.kcube.support.MainStage;
 import com.kcube.support.Support;
-import com.kcube.support.main.MainStage;
 
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;

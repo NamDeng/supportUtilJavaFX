@@ -3,8 +3,8 @@ package com.kcube.support.jdk;
 import java.io.File;
 import java.util.List;
 
+import com.kcube.support.MainStage;
 import com.kcube.support.Support;
-import com.kcube.support.main.MainStage;
 import com.kcube.support.util.AlertUtil;
 
 import javafx.collections.ListChangeListener;
