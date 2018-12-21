@@ -1,11 +1,13 @@
 package com.kcube.support.unicode;
 
 import java.io.BufferedReader;
+import java.io.BufferedWriter;
 import java.io.File;
 import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
 import java.io.FileReader;
-import java.io.FileWriter;
 import java.io.IOException;
+import java.io.OutputStreamWriter;
 
 import org.apache.commons.lang3.StringEscapeUtils;
 
@@ -36,13 +38,14 @@ public class Unicode {
 	 */
 	public static void convertToUnicodeFile(final File source, final File dest) {
 		try (FileReader fileReader = new FileReader(source);
-				FileWriter fileWriter = new FileWriter(dest);
-				BufferedReader buffReader = new BufferedReader(fileReader)) {
-			String line = "";
+				BufferedReader buffReader = new BufferedReader(fileReader);
+				BufferedWriter bufferedWriter = new BufferedWriter(
+						new OutputStreamWriter(new FileOutputStream(dest), "UTF-8"))) {
 
+			String line = "";
 			while ((line = buffReader.readLine()) != null) {
-				fileWriter.write(StringEscapeUtils.escapeJava(line));
-				fileWriter.write(System.getProperty("line.separator"));
+				bufferedWriter.write(StringEscapeUtils.escapeJava(line));
+				bufferedWriter.write(System.getProperty("line.separator"));
 			}
 		} catch (FileNotFoundException e) {
 			e.printStackTrace();
