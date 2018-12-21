@@ -1,44 +1,66 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
+<?import javafx.geometry.Insets?>
 <?import javafx.scene.control.Button?>
 <?import javafx.scene.control.DatePicker?>
 <?import javafx.scene.control.Label?>
+<?import javafx.scene.control.RadioButton?>
 <?import javafx.scene.control.TextArea?>
 <?import javafx.scene.control.TextField?>
+<?import javafx.scene.control.ToggleGroup?>
 <?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.layout.HBox?>
 <?import javafx.scene.layout.Pane?>
+<?import javafx.scene.layout.VBox?>
 
 <AnchorPane prefHeight="800.0" prefWidth="1200.0" xmlns="http://javafx.com/javafx/8.0.141" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.kcube.support.patch.PatchController">
    <children>
-      <Pane layoutX="7.0" layoutY="11.0" prefHeight="71.0" prefWidth="806.0">
+      <Pane layoutX="195.0" layoutY="11.0" prefHeight="71.0" prefWidth="792.0">
          <children>
             <Label layoutX="-1.0" layoutY="25.0" styleClass="support-label" />
-            <TextField fx:id="sourcePathField" layoutX="185.0" layoutY="15.0" prefHeight="43.0" prefWidth="784.0" />
+            <TextField fx:id="sourcePathField" layoutX="185.0" layoutY="15.0" onDragDropped="#onDragDropWorkPath" onDragOver="#onDragOverWorkPath" prefHeight="43.0" prefWidth="598.0" />
             <Button fx:id="sourceBtn" layoutX="14.0" layoutY="14.0" mnemonicParsing="false" onAction="#addSourceDirectory" prefHeight="43.0" prefWidth="162.0" text="워크스페이스 선택" />
          </children>
       </Pane>
-      <Pane layoutX="7.0" layoutY="82.0" prefHeight="71.0" prefWidth="806.0">
+      <Pane layoutX="195.0" layoutY="82.0" prefHeight="71.0" prefWidth="792.0">
          <children>
-            <TextField fx:id="destPathField" layoutX="185.0" layoutY="14.0" prefHeight="43.0" prefWidth="784.0" />
-            <Button fx:id="destBtn" layoutX="12.0" layoutY="14.0" mnemonicParsing="false" onAction="#addDestDirectory" prefHeight="43.0" prefWidth="162.0" text="파일 생성 위치 선택" />
+            <TextField fx:id="destPathField" layoutX="185.0" layoutY="14.0" onDragDropped="#onDragDropTargetPath" onDragOver="#onDragOverTargetPath" prefHeight="43.0" prefWidth="598.0" />
+            <Button fx:id="destBtn" layoutX="12.0" layoutY="14.0" mnemonicParsing="false" onAction="#addDestDirectory" prefHeight="43.0" prefWidth="162.0" text="패치 파일 경로  선택" />
          </children>
       </Pane>
       <Button layoutX="997.0" layoutY="31.0" mnemonicParsing="false" onAction="#makePatchFile" prefHeight="174.0" prefWidth="184.0" styleClass="support-btn" text="패치 파일 생성" />
-      <TextArea fx:id="resultArea" editable="false" layoutX="18.0" layoutY="215.0" prefHeight="527.0" prefWidth="1164.0" />
+      <TextArea fx:id="resultArea" editable="false" layoutX="22.0" layoutY="224.0" prefHeight="518.0" prefWidth="1164.0" />
       <Button layoutX="990.0" layoutY="750.0" mnemonicParsing="false" onAction="#moveMainPage" prefHeight="36.0" prefWidth="191.0" styleClass="main-btn-blue" text="초기화면으로 이동" />
       <HBox layoutX="11.0" layoutY="215.0" prefHeight="272.0" prefWidth="122.0" />
-      <Pane layoutX="530.0" layoutY="147.0" prefHeight="59.0" prefWidth="455.0">
+      <Pane layoutX="626.0" layoutY="146.0" prefHeight="59.0" prefWidth="358.0">
          <children>
-            <Label layoutX="32.0" layoutY="11.0" prefHeight="36.0" prefWidth="131.0" text="변경 기준일 :" />
-            <DatePicker fx:id="baseDateField" layoutX="138.0" layoutY="7.0" prefHeight="43.0" prefWidth="307.0" />
+            <Label layoutX="12.0" layoutY="12.0" prefHeight="36.0" prefWidth="92.0" text="변경 기준일 :" />
+            <DatePicker fx:id="baseDateField" layoutX="105.0" layoutY="7.0" prefHeight="43.0" prefWidth="244.0" />
          </children>
       </Pane>
-      <Pane layoutX="18.0" layoutY="145.0" prefHeight="59.0" prefWidth="418.0">
+      <Pane layoutX="204.0" layoutY="147.0" prefHeight="59.0" prefWidth="432.0">
          <children>
-            <Label layoutX="57.0" layoutY="12.0" prefHeight="36.0" prefWidth="102.0" text="프로젝트명 :" />
-            <TextField fx:id="projectField" layoutX="173.0" layoutY="8.0" prefHeight="43.0" prefWidth="336.0" />
+            <Label layoutY="12.0" prefHeight="36.0" prefWidth="167.0" text="프로젝트명 or 앱명칭:" />
+            <TextField fx:id="projectField" layoutX="177.0" layoutY="8.0" prefHeight="43.0" prefWidth="244.0" />
          </children>
       </Pane>
+      <VBox layoutX="22.0" layoutY="23.0" prefHeight="184.0" prefWidth="169.0" style="-fx-border-style: solid;">
+         <children>
+            <Label alignment="CENTER" contentDisplay="TOP" prefHeight="45.0" prefWidth="167.0" style="-fx-border-style: solid;" styleClass="support-label" text="소스 유형" />
+            <RadioButton fx:id="main" mnemonicParsing="false" prefHeight="48.0" prefWidth="174.0" selected="true" text="ext">
+               <toggleGroup>
+                  <ToggleGroup fx:id="type" />
+               </toggleGroup>
+               <padding>
+                  <Insets left="10.0" top="10.0" />
+               </padding>
+            </RadioButton>
+            <RadioButton fx:id="app" mnemonicParsing="false" prefHeight="47.0" prefWidth="179.0" text="app" toggleGroup="$type">
+               <padding>
+                  <Insets left="10.0" top="10.0" />
+               </padding>
+            </RadioButton>
+         </children>
+      </VBox>
    </children>
 </AnchorPane>

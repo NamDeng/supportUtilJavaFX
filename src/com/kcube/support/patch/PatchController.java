@@ -9,13 +9,19 @@ import org.apache.commons.lang3.StringUtils;
 
 import com.kcube.support.MainStage;
 import com.kcube.support.Support;
+import com.kcube.support.util.AlertUtil;
 
+import javafx.beans.value.ChangeListener;
+import javafx.beans.value.ObservableValue;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.control.Button;
 import javafx.scene.control.DatePicker;
+import javafx.scene.control.RadioButton;
 import javafx.scene.control.TextArea;
 import javafx.scene.control.TextField;
+import javafx.scene.control.Toggle;
+import javafx.scene.control.ToggleGroup;
 import javafx.scene.input.DragEvent;
 import javafx.scene.input.Dragboard;
 import javafx.scene.input.TransferMode;
@@ -48,12 +54,37 @@ public class PatchController {
 	private DatePicker baseDateField;
 
 	@FXML
+	private ToggleGroup type;
+
+	@FXML
+	private RadioButton main;
+
+	@FXML
+	private RadioButton app;
+
+	private String sourceType = "ext";
+
+	@FXML
 	public void initialize() {
 		initListener();
 	}
 
 	private void initListener() {
+		sourcePathField.textProperty().addListener((observable, oldValue, newValue) -> {
+			sourcePathField.setText(newValue);
+		});
 
+		destPathField.textProperty().addListener((observable, oldValue, newValue) -> {
+			destPathField.setText(newValue);
+		});
+
+		type.selectedToggleProperty().addListener(new ChangeListener<Toggle>() {
+			@Override
+			public void changed(ObservableValue<? extends Toggle> observable, Toggle oldValue, Toggle newValue) {
+				RadioButton selectButton =  (RadioButton) newValue.getToggleGroup().getSelectedToggle();
+				sourceType = selectButton.getText();
+			}
+		});
 	}
 
 	/**
@@ -98,7 +129,7 @@ public class PatchController {
 		final String projectName = projectField.getText();
 		final LocalDate baseDate = baseDateField.getValue();
 
-		final Patch patch = new Patch(sourcePath, destPath, projectName, baseDate);
+		final Patch patch = new Patch(sourcePath, destPath, projectName, baseDate, sourceType);
 		patch.validate();
 
 		final StringBuilder result = new StringBuilder();
@@ -108,6 +139,9 @@ public class PatchController {
 		final List<Path> srcFileList = patch.getCopyFileList(patch.getSrcPath());
 		result.append(patch.copySrcFile(srcFileList));
 
+		if(webFileList.isEmpty() && srcFileList.isEmpty())
+			result.append("변경된 파일이 없습니다. 변경 기준일을 확인해주세요.");
+
 		resultArea.setText(result.toString());
 	}
 
@@ -116,7 +150,7 @@ public class PatchController {
 	 *
 	 * @param event
 	 */
-	public void onDragOver(DragEvent event) {
+	public void onDragOverWorkPath(DragEvent event) {
 		Dragboard board = event.getDragboard();
 
 		if (board.hasFiles()) {
@@ -130,11 +164,70 @@ public class PatchController {
 	 *
 	 * @param event
 	 */
-	public void onDragDropFile(DragEvent event) {
+	public void onDragDropWorkPath(DragEvent event) {
 		final Dragboard board = event.getDragboard();
 
-		boolean success = false;
+		int cnt = 0;
+		final boolean success = false;
 		if (board.hasFiles()) {
+			for (File file : board.getFiles()) {
+				if (cnt != 0) {
+					AlertUtil.showAndWaitForWarning("디렉토리 추가 에러", "하나의 디렉토리만 선택 가능합니다.");
+					return;
+				}
+
+				if(!file.isDirectory()) {
+					AlertUtil.showAndWaitForError(file.getName(), "디렉토리 추가 에러. 디렉토리만 선택 가능합니다.");
+					return;
+				}
+				sourcePathField.setText(file.getAbsolutePath());
+				cnt++;
+			}
+
+		}
+		event.setDropCompleted(success);
+		event.consume();
+	}
+
+	/**
+	 * 드래그 오버
+	 *
+	 * @param event
+	 */
+	public void onDragOverTargetPath(DragEvent event) {
+		Dragboard board = event.getDragboard();
+
+		if (board.hasFiles()) {
+			event.acceptTransferModes(TransferMode.ANY);
+		}
+		event.consume();
+	}
+
+	/**
+	 * 파일을 드래그 드랍방식으로 파추가한다.
+	 *
+	 * @param event
+	 */
+	public void onDragDropTargetPath(DragEvent event) {
+		final Dragboard board = event.getDragboard();
+
+		int cnt = 0;
+		final boolean success = false;
+		if (board.hasFiles()) {
+			for (File file : board.getFiles()) {
+				if (cnt != 0) {
+					AlertUtil.showAndWaitForWarning("디렉토리 추가 에러", "하나의 디렉토리만 선택 가능합니다.");
+					return;
+				}
+
+				if(!file.isDirectory()) {
+					AlertUtil.showAndWaitForError(file.getName(), "디렉토리 추가 에러. 디렉토리만 선택 가능합니다.");
+					return;
+				}
+				destPathField.setText(file.getAbsolutePath());
+				cnt++;
+			}
+
 		}
 		event.setDropCompleted(success);
 		event.consume();

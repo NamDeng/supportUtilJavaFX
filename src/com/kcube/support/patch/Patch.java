@@ -6,6 +6,7 @@ import java.nio.file.FileAlreadyExistsException;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
+import java.nio.file.StandardCopyOption;
 import java.time.Instant;
 import java.time.LocalDate;
 import java.time.ZoneId;
@@ -24,6 +25,15 @@ import com.kcube.support.unicode.Unicode;
 import com.kcube.support.util.AlertUtil;
 
 public class Patch {
+	public static final String[] SOURCE_TYPE = { "ext", "app" };
+
+	public static final String SRC = "src";
+	public static final String WEB = "web";
+	public static final String CST = "cst";
+	public static final String BIN = "bin";
+	public static final String WEB_INF = "WEB-INF";
+	public static final String CLASSES = "classes";
+
 	private Path webPath;
 	private Path srcPath;
 	private Path classPath;
@@ -35,20 +45,34 @@ public class Patch {
 
 	private LocalDate baseDate;
 
-	public Patch(String sourcePath, String destPath, String projectName, LocalDate baseDate) {
+	public Patch(String sourcePath, String destPath, String projectName, LocalDate baseDate, String sourceType) {
 		this.workspacePath = sourcePath;
 		this.destPath = destPath;
 		this.projectName = projectName;
 		this.baseDate = baseDate;
 
-		init();
+		init(sourceType);
 	}
 
-	private void init() {
-		this.binPath = Paths.get(getPath(workspacePath, "bin"));
-		this.srcPath = Paths.get(getPath(workspacePath, "cst", this.projectName, "src"));
-		this.webPath = Paths.get(getPath(workspacePath, "cst", this.projectName, "web"));
-		this.classPath = Paths.get(getPath(this.destPath, "WEB-INF", "classes"));
+	/**
+	 * 패치 파일 생성을 위한 경로를 초기화한다.
+	 *
+	 * @param sourceType
+	 */
+	private void init(String sourceType) {
+		final String SrcPath = sourceType.equals(SOURCE_TYPE[0])
+				? getPath(workspacePath, CST, this.projectName, SRC)
+				: getPath(workspacePath, this.projectName, SRC);
+		final String WebPath = sourceType.equals(SOURCE_TYPE[0])
+				? getPath(workspacePath, CST, this.projectName, WEB)
+				: getPath(workspacePath, this.projectName, WEB);
+		final String binPath = getPath(workspacePath, BIN);
+		final String classPath = getPath(this.destPath, WEB_INF, CLASSES);
+
+		this.srcPath = Paths.get(SrcPath);
+		this.webPath = Paths.get(WebPath);
+		this.binPath = Paths.get(binPath);
+		this.classPath = Paths.get(classPath);
 	}
 
 	/**
@@ -58,8 +82,8 @@ public class Patch {
 	 * @return
 	 */
 	String getPath(String... paths) {
-		String lineSeparator = System.getProperty("file.separator");
-		StringJoiner sj = new StringJoiner(lineSeparator);
+		final String lineSeparator = System.getProperty("file.separator");
+		final StringJoiner sj = new StringJoiner(lineSeparator);
 		for (String path : paths) {
 			sj.add(path);
 		}
@@ -69,19 +93,19 @@ public class Patch {
 	/**
 	 * 변경 기준일 이후의 파일 목록을 가져온다.
 	 *
-	 * @param sourcePath
+	 * @param targetPath
 	 * @param baseDate
 	 * @return
 	 * @throws Exception
 	 */
-	List<Path> getCopyFileList(final Path sourcePath) throws Exception {
-		final boolean isExists = Files.exists(sourcePath);
+	List<Path> getCopyFileList(final Path targetPath) throws Exception {
+		final boolean isExists = Files.exists(targetPath);
 		if (isExists == false) {
 			AlertUtil.showAndWaitForError("패치 파일 생성 에러", "존재하지 않는 워크스페이스 경로입니다.");
 			throw new FileNotFoundException();
 		}
 
-		return Files.walk(sourcePath).filter(path -> {
+		return Files.walk(targetPath).filter(path -> {
 			long lastModifiedTime = 0L;
 			try {
 				lastModifiedTime = Files.getLastModifiedTime(path).toMillis();
@@ -136,7 +160,7 @@ public class Patch {
 							if (matcher.find()) {
 								final Path dest = destParent.resolve(file.getFileName());
 								try {
-									Files.copy(file, dest);
+									Files.copy(file, dest, StandardCopyOption.REPLACE_EXISTING);
 									result.append(dest + " 파일 복사 성공");
 								} catch (FileAlreadyExistsException faee) {
 									result.append(dest + " 파일이 이미 존재함");
@@ -150,7 +174,7 @@ public class Patch {
 						Unicode.convertToUnicodeFile(binPath.toFile(), destPath.toFile());
 						result.append(destPath + " 파일 복사 성공");
 					} else {
-						Files.copy(binPath, destPath);
+						Files.copy(binPath, destPath, StandardCopyOption.REPLACE_EXISTING);
 						result.append(destPath + " 파일 복사 성공");
 					}
 				}
@@ -182,7 +206,7 @@ public class Patch {
 					if (Files.notExists(destPath.getParent())) {
 						Files.createDirectories(destPath.getParent());
 					}
-					Files.copy(path, destPath);
+					Files.copy(path, destPath, StandardCopyOption.REPLACE_EXISTING);
 					result.append(destPath + " 파일 복사 성공");
 				}
 			} catch (FileAlreadyExistsException faee) {
