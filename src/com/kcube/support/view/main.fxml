@@ -6,19 +6,20 @@
 <?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.layout.Pane?>
 
-<AnchorPane prefHeight="800.0" prefWidth="1000.0" xmlns="http://javafx.com/javafx/8.0.141" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.kcube.support.main.MainController">
+<AnchorPane prefHeight="800.0" prefWidth="1200.0" xmlns="http://javafx.com/javafx/8.0.141" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.kcube.support.main.MainController">
    <children>
       <Pane layoutX="89.0" layoutY="25.0" />
       <Label layoutX="29.0" layoutY="25.0" prefHeight="49.0" prefWidth="552.0" styleClass="main-label" text="기술지원 유틸 v1.1" />
-      <ButtonBar layoutX="7.0" layoutY="98.0" prefHeight="200.0" prefWidth="750.0">
+      <ButtonBar layoutX="7.0" layoutY="98.0" prefHeight="200.0" prefWidth="955.0">
          <buttons>
             <Button mnemonicParsing="false" onAction="#moveJdkPage" prefHeight="235.0" prefWidth="235.0" styleClass="main-btn" text="JDK 버전 확인" />
-            <Button alignment="CENTER" mnemonicParsing="false" onAction="#moveUnicodePage" prefHeight="235.0" prefWidth="235.0" styleClass="main-btn" text="유니코드 변환기" />
+            <Button alignment="CENTER" mnemonicParsing="false" onAction="#moveUnicodePage" prefHeight="235.0" prefWidth="235.0" styleClass="main-btn" text="유니코드 변환기" textAlignment="CENTER" />
             <Button alignment="CENTER" mnemonicParsing="false" onAction="#moveCipherPage" prefHeight="235.0" prefWidth="235.0" styleClass="main-btn" text="암복호화 " />
          </buttons>
       </ButtonBar>
-      <ButtonBar layoutX="29.0" layoutY="332.0" prefHeight="200.0" prefWidth="725.0">
+      <ButtonBar layoutX="29.0" layoutY="332.0" prefHeight="200.0" prefWidth="933.0">
          <buttons>
+            <Button alignment="CENTER" mnemonicParsing="false" onAction="#moveJsonParserPage" prefHeight="235.0" prefWidth="235.0" styleClass="main-btn" text="JSON Parser Online" />
             <Button alignment="CENTER" mnemonicParsing="false" onAction="#movePatchPage" prefHeight="235.0" prefWidth="235.0" styleClass="main-btn" text="패치파일 생성기" />
          </buttons>
       </ButtonBar>

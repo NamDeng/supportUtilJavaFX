@@ -11,4 +11,7 @@ public class Support {
 	public static final String UNICODE_PAGE_URL = "view/unicode.fxml";
 	public static final String CIPER_PAGE_URL = "view/cipher.fxml";
 	public static final String PATCH_PAGE_URL = "view/patch.fxml";
+	public static final String JSON_PARSER_PAGE_URL = "view/jsonParser.fxml";
+
+	public static final String JSON_PARSER_ONLINE_URL = "http://json.parser.online.fr/";
 }

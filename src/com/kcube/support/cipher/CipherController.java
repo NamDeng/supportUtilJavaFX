@@ -14,7 +14,6 @@ import javafx.beans.value.ObservableValue;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.control.Button;
-import javafx.scene.control.Label;
 import javafx.scene.control.RadioButton;
 import javafx.scene.control.TextArea;
 import javafx.scene.control.TextField;
@@ -22,9 +21,6 @@ import javafx.scene.control.Toggle;
 import javafx.scene.control.ToggleGroup;
 
 public class CipherController {
-
-	@FXML
-	private Label infoLabel;
 
 	@FXML
 	private TextField base64Field;
@@ -97,15 +93,7 @@ public class CipherController {
 
 	@FXML
 	public void initialize() {
-		initComponent();
 		initListener();
-	}
-
-	/**
-	 * 컴포넌트 초기화
-	 */
-	private void initComponent() {
-		infoLabel.setWrapText(true);
 	}
 
 	/**

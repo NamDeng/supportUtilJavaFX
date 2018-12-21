@@ -12,19 +12,18 @@
 <?import javafx.scene.layout.Pane?>
 <?import javafx.scene.layout.VBox?>
 
-<AnchorPane prefHeight="800.0" prefWidth="1000.0" xmlns="http://javafx.com/javafx/8.0.141" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.kcube.support.cipher.CipherController">
+<AnchorPane prefHeight="800.0" prefWidth="1200.0" xmlns="http://javafx.com/javafx/8.0.141" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.kcube.support.cipher.CipherController">
    <children>
-      <Pane layoutX="89.0" layoutY="25.0" />
-      <Pane layoutX="252.0" layoutY="294.0" prefHeight="81.0" prefWidth="768.0">
+      <Pane layoutX="252.0" layoutY="194.0" prefHeight="81.0" prefWidth="927.0">
          <children>
-            <TextField fx:id="aesField" layoutY="31.0" prefHeight="43.0" prefWidth="375.0" />
-            <TextField fx:id="secureKeyField" layoutX="383.0" layoutY="31.0" prefHeight="43.0" prefWidth="235.0" />
-            <Button fx:id="aesBtn" layoutX="630.0" layoutY="31.0" mnemonicParsing="false" onAction="#printAESResult" prefHeight="43.0" prefWidth="113.0" text="AES 변환" />
-            <Label layoutX="384.0" layoutY="-10.0" prefHeight="43.0" prefWidth="180.0" styleClass="support-label" text="양방향 개인키 :" />
+            <TextField fx:id="aesField" layoutY="31.0" prefHeight="43.0" prefWidth="552.0" />
+            <TextField fx:id="secureKeyField" layoutX="564.0" layoutY="31.0" prefHeight="43.0" prefWidth="235.0" />
+            <Button fx:id="aesBtn" layoutX="807.0" layoutY="31.0" mnemonicParsing="false" onAction="#printAESResult" prefHeight="43.0" prefWidth="120.0" text="AES 변환" />
+            <Label layoutX="564.0" layoutY="-10.0" prefHeight="43.0" prefWidth="180.0" styleClass="support-label" text="양방향 개인키 :" />
             <Label styleClass="support-label" text="AES 변환값 입력 :" />
          </children>
       </Pane>
-      <Button layoutX="802.0" layoutY="750.0" mnemonicParsing="false" onAction="#moveMainPage" prefHeight="36.0" prefWidth="191.0" styleClass="main-btn-blue" text="초기화면으로 이동" />
+      <Button layoutX="990.0" layoutY="750.0" mnemonicParsing="false" onAction="#moveMainPage" prefHeight="36.0" prefWidth="191.0" styleClass="main-btn-blue" text="초기화면으로 이동" />
       <HBox layoutX="7.0" layoutY="139.0" prefHeight="119.0" prefWidth="235.0">
          <children>
             <VBox prefHeight="595.0" prefWidth="224.0" style="-fx-border-style: solid;">
@@ -47,7 +46,6 @@
             </VBox>
          </children>
       </HBox>
-      <Label fx:id="infoLabel" layoutX="10.0" layoutY="13.0" prefHeight="43.0" prefWidth="991.0" style="-fx-border-color: black;" styleClass="support-label" text=" AES 알고리즘은 암복호화에 키가 필요하며, 키 길이는 비트수와 동일합니다." wrapText="true" />
       <HBox layoutX="7.0" layoutY="268.0" prefHeight="190.0" prefWidth="235.0">
          <children>
             <VBox prefHeight="176.0" prefWidth="224.0" style="-fx-border-style: solid;">
@@ -130,21 +128,21 @@
             </VBox>
          </children>
       </HBox>
-      <Pane layoutX="238.0" layoutY="122.0" prefHeight="71.0" prefWidth="768.0">
+      <Pane layoutX="238.0" layoutY="32.0" prefHeight="71.0" prefWidth="955.0">
          <children>
-            <TextField fx:id="base64Field" layoutX="14.0" layoutY="15.0" prefHeight="43.0" prefWidth="746.0" />
+            <TextField fx:id="base64Field" layoutX="14.0" layoutY="15.0" prefHeight="43.0" prefWidth="927.0" />
             <Label layoutX="14.0" layoutY="-11.0" styleClass="support-label" text="Base64 변환값 입력 :" />
          </children>
       </Pane>
-      <Pane layoutX="252.0" layoutY="203.0" prefHeight="89.0" prefWidth="746.0">
+      <Pane layoutX="252.0" layoutY="110.0" prefHeight="89.0" prefWidth="938.0">
          <children>
-            <TextField fx:id="shaField" layoutY="23.0" prefHeight="43.0" prefWidth="746.0" />
+            <TextField fx:id="shaField" layoutY="23.0" prefHeight="43.0" prefWidth="927.0" />
             <Label styleClass="support-label" text="SHA 변환값 입력 :" />
          </children>
       </Pane>
-      <Pane layoutX="252.0" layoutY="391.0" prefHeight="336.0" prefWidth="746.0">
+      <Pane layoutX="252.0" layoutY="292.0" prefHeight="430.0" prefWidth="938.0">
          <children>
-            <TextArea fx:id="resultArea" editable="false" layoutY="35.0" prefHeight="294.0" prefWidth="746.0" />
+            <TextArea fx:id="resultArea" editable="false" layoutY="35.0" prefHeight="394.0" prefWidth="927.0" />
             <Label layoutY="8.0" styleClass="support-label" text="변환 결과:" />
          </children>
       </Pane>

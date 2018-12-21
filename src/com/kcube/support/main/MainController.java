@@ -42,4 +42,13 @@ public class MainController {
 	public void movePatchPage(ActionEvent event) {
 		MainStage.showChangePage(Support.PATCH_PAGE_URL);
 	}
+
+	/**
+	 * 패치 준비 화면으로 이동
+	 *
+	 * @param event
+	 */
+	public void moveJsonParserPage(ActionEvent event) {
+		MainStage.showChangePage(Support.JSON_PARSER_PAGE_URL);
+	}
 }
