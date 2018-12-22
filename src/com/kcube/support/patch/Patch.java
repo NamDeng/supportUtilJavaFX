@@ -147,16 +147,15 @@ public class Patch {
 					}
 
 					if (JDK.isJavaFile(destPath.toString())) {
-
 						// 확장자를 제외한 파일명 추출
 						String fileName = destPath.getFileName().toString();
 						fileName = fileName.substring(0, fileName.lastIndexOf("."));
 						// 추출한 파일명으로 정규식으로 class파일 binPath에서 찾아서 복사
-						final String regex = "(" + fileName + ")[\\$]{0,1}[\\S]*(.class)";
+						final String regex = "(^(" + fileName + ")(.class))|(^(" + fileName + ")(\\$){1}[a-zA-Z1-9]*(.class))";
 						final Pattern pattern = Pattern.compile(regex);
 						final Path binParent = binPath.getParent();
 						Files.walk(binParent).forEach(file -> {
-							Matcher matcher = pattern.matcher(file.toString());
+							Matcher matcher = pattern.matcher(file.getFileName().toString());
 							if (matcher.find()) {
 								final Path dest = destParent.resolve(file.getFileName());
 								try {
