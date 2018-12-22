@@ -12,7 +12,7 @@ public class SHA implements Crypto {
 	}
 
 	@Override
-	public String encrypt(String plainText) throws NoSuchAlgorithmException {
+	public String encrypt(final String plainText) throws NoSuchAlgorithmException {
 		final MessageDigest messageDigest = MessageDigest.getInstance(method);
 		messageDigest.update(plainText.getBytes());
 		final byte digestBytes[] = messageDigest.digest();
@@ -25,7 +25,7 @@ public class SHA implements Crypto {
 	}
 
 	@Override
-	public String decrypt(String cypherText) throws Exception {
+	public String decrypt(final String cypherText) throws Exception {
 		return null;
 	}
 }

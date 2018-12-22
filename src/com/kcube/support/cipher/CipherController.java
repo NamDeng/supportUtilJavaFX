@@ -22,6 +22,9 @@ import javafx.scene.control.ToggleGroup;
 
 public class CipherController {
 
+	private static final String ENCRYPT = "encrypt";
+	private static final String DECRYPT = "decrypt";
+
 	@FXML
 	private TextField base64Field;
 
@@ -93,7 +96,21 @@ public class CipherController {
 
 	@FXML
 	public void initialize() {
+		initComponent();
 		initListener();
+	}
+
+	/**
+	 * 컴포넌트 초기화
+	 */
+	private void initComponent() {
+		// AES 암호화 알고리즘 암복호화 구분 초기 값
+		aes128Encryption.setUserData(ENCRYPT);
+		aes128Decryption.setUserData(DECRYPT);
+		aes192Encryption.setUserData(ENCRYPT);
+		aes192Decryption.setUserData(DECRYPT);
+		aes256Encryption.setUserData(ENCRYPT);
+		aes256Decryption.setUserData(DECRYPT);
 	}
 
 	/**
@@ -154,23 +171,24 @@ public class CipherController {
 	 * @throws UnsupportedEncodingException
 	 */
 	private String convertBase64(final String input) {
-		String result = null;
+		final StringBuffer stringBuffer = new StringBuffer();
 		try {
 			if (base64Encoder.isSelected()) {
-				result = new String(Base64.getEncoder().encode(input.getBytes("UTF-8")));
+				stringBuffer.append(new String(Base64.getEncoder().encode(input.getBytes("UTF-8"))));
 			} else if (base64Decoder.isSelected()) {
 				try {
-					result = new String(Base64.getDecoder().decode(input.getBytes("UTF-8")));
+					stringBuffer.append(new String(Base64.getDecoder().decode(input.getBytes("UTF-8"))));
 				} catch (IllegalArgumentException e) {
-					result = "base64 디코딩 입력값이 올바르지 않습니다.\n";
-					result += "Error code : " + e.getMessage();
+					stringBuffer.append("base64 디코딩 입력값이 올바르지 않습니다.");
+					stringBuffer.append(System.getProperty("line.seperator"));
+					stringBuffer.append("Error code : " + e.getMessage());
 				}
 			}
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
 
-		return result;
+		return stringBuffer.toString();
 	}
 
 	/**
@@ -191,48 +209,46 @@ public class CipherController {
 	}
 
 	/**
+	 * SHA 암호화 알고리즘으로 암호화
 	 *
 	 * @param input
 	 * @return
 	 * @throws Exception
 	 */
 	private String convertSHA(final String input) {
-		String type = "";
-		if (sha224Encryption.isSelected()) {
-			type = "SHA-224";
-		} else if (sha256Encryption.isSelected()) {
-			type = "SHA-256";
-		} else if (sha384Encryption.isSelected()) {
-			type = "SHA-384";
-		} else if (sha512Encryption.isSelected()) {
-			type = "SHA-512";
-		}
-		Crypto crypto = new SHA(type);
-		String result = "";
+		final RadioButton selected = (RadioButton) shaGroup.getSelectedToggle();
+		final String method = selected.getText();
+		final Crypto crypto = new SHA(method);
+		final StringBuffer stringBuffer = new StringBuffer();
 		try {
-			result = crypto.encrypt(input);
+			stringBuffer.append(crypto.encrypt(input));
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
-		return result;
+		return stringBuffer.toString();
 	}
 
 	/**
+	 *
 	 *
 	 * @param event
 	 * @throws Exception
 	 */
 	public void printAESResult(ActionEvent event) throws Exception {
-		final String input = aesField.getText();
-		final String secureKey = secureKeyField.getText();
+		final RadioButton selected = (RadioButton) aesGroup.getSelectedToggle();
 
-		Crypto crypto = new AES(secureKey);
-		String result = null;
-		if (aes128Encryption.isSelected() || aes192Encryption.isSelected() || aes256Encryption.isSelected()) {
-			result = crypto.encrypt(input);
-		} else if (aes128Decryption.isSelected() || aes192Decryption.isSelected() || aes256Decryption.isSelected()) {
-			result = crypto.decrypt(input);
+		final String method = selected.getText();
+		final String secureKey = secureKeyField.getText();
+		final Crypto crypto = new AES(method, secureKey);
+
+		final String action = selected.getUserData().toString();
+		final StringBuffer stringBuffer = new StringBuffer();
+		final String input = aesField.getText();
+		if (action.equals(DECRYPT)) {
+			stringBuffer.append(crypto.decrypt(input));
+		} else {
+			stringBuffer.append(crypto.encrypt(input));
 		}
-		resultArea.setText(result);
+		resultArea.setText(stringBuffer.toString());
 	}
 }

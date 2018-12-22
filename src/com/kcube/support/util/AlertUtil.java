@@ -41,15 +41,15 @@ public class AlertUtil {
 	public static void showAndWaitForWarning(final String header, final String content) {
 		Alert alert = new Alert(AlertType.WARNING, content);
 		alert.setTitle(Support.TITLE);
-		alert.setHeaderText(header);
 
+		alert.setHeaderText(header);
 		alert.showAndWait();
 	}
 
 	public static void showAndWaitForError(final String content) {
 		Alert alert = new Alert(AlertType.ERROR, content);
 		alert.setTitle(Support.TITLE);
-		alert.setHeaderText("Error!");
+		alert.setHeaderText("error");
 
 		alert.showAndWait();
 	}

@@ -8,7 +8,7 @@ public interface Crypto {
 	 * @return
 	 * @throws Exception
 	 */
-	String encrypt(String plainText) throws Exception;
+	String encrypt(final String plainText) throws Exception;
 
 	/**
 	 *
@@ -16,5 +16,5 @@ public interface Crypto {
 	 * @return
 	 * @throws Exception
 	 */
-	String decrypt(String cypherText) throws Exception;
+	String decrypt(final String cypherText) throws Exception;
 }

@@ -45,7 +45,8 @@ public class Patch {
 
 	private LocalDate baseDate;
 
-	public Patch(String sourcePath, String destPath, String projectName, LocalDate baseDate, String sourceType) {
+	public Patch(final String sourcePath, final String destPath, final String projectName,
+					final LocalDate baseDate, final String sourceType) {
 		this.workspacePath = sourcePath;
 		this.destPath = destPath;
 		this.projectName = projectName;
@@ -59,7 +60,7 @@ public class Patch {
 	 *
 	 * @param sourceType
 	 */
-	private void init(String sourceType) {
+	private void init(final String sourceType) {
 		final String SrcPath = sourceType.equals(SOURCE_TYPE[0])
 				? getPath(workspacePath, CST, this.projectName, SRC)
 				: getPath(workspacePath, this.projectName, SRC);
@@ -81,7 +82,7 @@ public class Patch {
 	 * @param paths
 	 * @return
 	 */
-	String getPath(String... paths) {
+	String getPath(final String... paths) {
 		final String lineSeparator = System.getProperty("file.separator");
 		final StringJoiner sj = new StringJoiner(lineSeparator);
 		for (String path : paths) {
@@ -141,7 +142,7 @@ public class Patch {
 			final Path destPath = this.classPath.resolve(relativePath);
 			try {
 				if (isFile(destPath)) {
-					Path destParent = destPath.getParent();
+					final Path destParent = destPath.getParent();
 					if (Files.notExists(destParent)) {
 						Files.createDirectories(destParent);
 					}

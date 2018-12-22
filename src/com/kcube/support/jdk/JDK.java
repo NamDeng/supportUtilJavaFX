@@ -38,7 +38,7 @@ public class JDK {
 	 * @param path
 	 * @return
 	 */
-	public static boolean isClassFile(String path) {
+	public static boolean isClassFile(final String path) {
 		int lastIndexOf = path.lastIndexOf(".");
 		if (lastIndexOf == -1)
 			return false;
@@ -55,7 +55,7 @@ public class JDK {
 	 * @param path
 	 * @return
 	 */
-	public static boolean isJavaFile(String path) {
+	public static boolean isJavaFile(final String path) {
 		int lastIndexOf = path.lastIndexOf(".");
 		if (lastIndexOf == -1)
 			return false;
