@@ -27,12 +27,12 @@ import com.kcube.support.util.AlertUtil;
 public class Patch {
 	public static final String[] SOURCE_TYPE = { "ext", "app" };
 
-	public static final String SRC = "src";
-	public static final String WEB = "web";
-	public static final String CST = "cst";
-	public static final String BIN = "bin";
-	public static final String WEB_INF = "WEB-INF";
-	public static final String CLASSES = "classes";
+	private static final String SRC = "src";
+	private static final String WEB = "web";
+	private static final String CST = "cst";
+	private static final String BIN = "bin";
+	private static final String WEB_INF = "WEB-INF";
+	private static final String CLASSES = "classes";
 
 	private Path webPath;
 	private Path srcPath;
