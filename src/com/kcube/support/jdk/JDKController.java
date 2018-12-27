@@ -7,10 +7,13 @@ import com.kcube.support.MainStage;
 import com.kcube.support.Support;
 import com.kcube.support.util.AlertUtil;
 
+import javafx.collections.FXCollections;
 import javafx.collections.ListChangeListener;
+import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.control.ListView;
+import javafx.scene.control.SelectionMode;
 import javafx.scene.control.TextArea;
 import javafx.scene.input.DragEvent;
 import javafx.scene.input.Dragboard;
@@ -28,7 +31,14 @@ public class JDKController {
 
 	@FXML
 	public void initialize() {
+		initComponent();
 		initListener();
+	}
+
+	private void initComponent() {
+		ObservableList<String> observableList = FXCollections.observableArrayList();
+		fileList.setItems(observableList);
+		fileList.getSelectionModel().setSelectionMode(SelectionMode.MULTIPLE);
 	}
 
 	/**
@@ -133,24 +143,7 @@ public class JDKController {
 	 * @param event
 	 */
 	public void deleteFiles(ActionEvent event) {
-		final int selectedIdx = fileList.getSelectionModel().getSelectedIndex();
-		if (selectedIdx == -1) {
-			AlertUtil.showAndWaitForWarning("파일 선택", "선택된 파일이 없습니다.");
-			throw new NullPointerException();
-		}
-
-		final int newSelectedIdx = (selectedIdx == fileList.getItems().size() - 1) ? selectedIdx - 1 : selectedIdx;
-
-		fileList.getItems().remove(selectedIdx);
-		fileList.getSelectionModel().select(newSelectedIdx);
-	}
-
-	/**
-	 * 목록에 있는 모든 class 파일을 제거하는 이벤트
-	 *
-	 * @param event
-	 */
-	public void deleteAllFiles(ActionEvent event) {
-		fileList.getItems().clear();
+		ObservableList<String> selectedIdxes =  fileList.getSelectionModel().getSelectedItems();
+		fileList.getItems().removeAll(selectedIdxes);
 	}
 }

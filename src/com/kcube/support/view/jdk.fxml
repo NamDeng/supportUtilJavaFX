@@ -17,6 +17,5 @@
       <TextArea fx:id="resultArea" editable="false" layoutX="622.0" layoutY="83.0" prefHeight="637.0" prefWidth="559.0" />
       <Label layoutX="123.0" layoutY="36.0" prefHeight="44.0" prefWidth="112.0" styleClass="support-label" text="파일 목록" />
       <Button layoutX="5.0" layoutY="129.0" mnemonicParsing="false" onAction="#deleteFiles" prefHeight="40.0" prefWidth="112.0" styleClass="support-btn" text="선택 삭제" />
-      <Button layoutX="5.0" layoutY="175.0" mnemonicParsing="false" onAction="#deleteAllFiles" prefHeight="40.0" prefWidth="112.0" styleClass="support-btn" text="전체 삭제" />
    </children>
 </AnchorPane>

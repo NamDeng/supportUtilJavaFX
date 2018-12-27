@@ -13,14 +13,14 @@
       <ButtonBar layoutX="7.0" layoutY="98.0" prefHeight="200.0" prefWidth="955.0">
          <buttons>
             <Button mnemonicParsing="false" onAction="#moveJdkPage" prefHeight="235.0" prefWidth="235.0" styleClass="main-btn" text="JDK 버전 확인" />
-            <Button alignment="CENTER" mnemonicParsing="false" onAction="#moveUnicodePage" prefHeight="235.0" prefWidth="235.0" styleClass="main-btn" text="유니코드 변환기" textAlignment="CENTER" />
-            <Button alignment="CENTER" mnemonicParsing="false" onAction="#moveCipherPage" prefHeight="235.0" prefWidth="235.0" styleClass="main-btn" text="암복호화 " />
+            <Button mnemonicParsing="false" onAction="#moveUnicodePage" prefHeight="235.0" prefWidth="235.0" styleClass="main-btn" text="유니코드 변환기" />
+            <Button mnemonicParsing="false" onAction="#moveCipherPage" prefHeight="235.0" prefWidth="235.0" styleClass="main-btn" text="암복호화 " />
          </buttons>
       </ButtonBar>
       <ButtonBar layoutX="29.0" layoutY="332.0" prefHeight="200.0" prefWidth="933.0">
          <buttons>
-            <Button alignment="CENTER" mnemonicParsing="false" onAction="#moveJsonParserPage" prefHeight="235.0" prefWidth="235.0" styleClass="main-btn" text="JSON Parser Online" />
-            <Button alignment="CENTER" mnemonicParsing="false" onAction="#movePatchPage" prefHeight="235.0" prefWidth="235.0" styleClass="main-btn" text="패치파일 생성기" />
+            <Button mnemonicParsing="false" onAction="#moveJsonParserPage" prefHeight="235.0" prefWidth="235.0" styleClass="main-btn" text="JSON Parser Online" />
+            <Button mnemonicParsing="false" onAction="#movePatchPage" prefHeight="235.0" prefWidth="235.0" styleClass="main-btn" text="패치파일 생성기" />
          </buttons>
       </ButtonBar>
    </children>
