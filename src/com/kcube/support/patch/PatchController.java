@@ -1,6 +1,7 @@
 package com.kcube.support.patch;
 
 import java.io.File;
+import java.io.FileWriter;
 import java.nio.file.Path;
 import java.time.LocalDate;
 import java.util.List;
@@ -81,7 +82,7 @@ public class PatchController {
 		type.selectedToggleProperty().addListener(new ChangeListener<Toggle>() {
 			@Override
 			public void changed(ObservableValue<? extends Toggle> observable, Toggle oldValue, Toggle newValue) {
-				RadioButton selectButton =  (RadioButton) newValue.getToggleGroup().getSelectedToggle();
+				RadioButton selectButton = (RadioButton) newValue.getToggleGroup().getSelectedToggle();
 				sourceType = selectButton.getText();
 			}
 		});
@@ -132,17 +133,26 @@ public class PatchController {
 		final Patch patch = new Patch(sourcePath, destPath, projectName, baseDate, sourceType);
 		patch.validate();
 
+		final String fileName = destPath + System.getProperty("file.separator") + "patchLog.txt";
 		final StringBuilder result = new StringBuilder();
-		final List<Path> webFileList = patch.getCopyFileList(patch.getWebPath());
-		result.append(patch.copyWebFile(webFileList));
+		try (final FileWriter log = new FileWriter(fileName, true)) {
+			log.write(System.lineSeparator());
+			log.write("==================" + projectName + " 패치 경로==================");
+			log.write(System.lineSeparator());
+			final List<Path> webFileList = patch.getCopyFileList(patch.getWebPath());
+			result.append(patch.copyWebFile(webFileList, log));
 
-		final List<Path> srcFileList = patch.getCopyFileList(patch.getSrcPath());
-		result.append(patch.copySrcFile(srcFileList));
+			final List<Path> srcFileList = patch.getCopyFileList(patch.getSrcPath());
+			result.append(patch.copySrcFile(srcFileList, log));
 
-		if(webFileList.isEmpty() && srcFileList.isEmpty())
-			result.append("변경된 파일이 없습니다. 변경 기준일을 확인해주세요.");
+			if (webFileList.isEmpty() && srcFileList.isEmpty())
+				result.append("변경된 파일이 없습니다. 변경 기준일을 확인해주세요.");
 
-		resultArea.setText(result.toString());
+			resultArea.setText(result.toString());
+
+		} catch (Exception e) {
+			// TODO: 에러처리 해야되는데....
+		}
 	}
 
 	/**
@@ -176,7 +186,7 @@ public class PatchController {
 					return;
 				}
 
-				if(!file.isDirectory()) {
+				if (!file.isDirectory()) {
 					AlertUtil.showAndWaitForError(file.getName(), "디렉토리 추가 에러. 디렉토리만 선택 가능합니다.");
 					return;
 				}
@@ -220,7 +230,7 @@ public class PatchController {
 					return;
 				}
 
-				if(!file.isDirectory()) {
+				if (!file.isDirectory()) {
 					AlertUtil.showAndWaitForError(file.getName(), "디렉토리 추가 에러. 디렉토리만 선택 가능합니다.");
 					return;
 				}
