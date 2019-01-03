@@ -289,6 +289,10 @@ public class Patch {
 			AlertUtil.showAndWaitForError("변경 기준일은 필수값입니다.");
 			throw new ValidationException("변경 기준일을 입력하지 않았습니다.");
 		}
+		if(!Files.exists(Paths.get(this.destPath))) {
+			AlertUtil.showAndWaitForError("존재하지 않는 패치 파일 생성 경로입니다.");
+			throw new ValidationException("존재하지 않는 패치 파일 생성 경로입니다.");
+		}
 	}
 
 	public Path getWebPath() {
