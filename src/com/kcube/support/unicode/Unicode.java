@@ -45,7 +45,7 @@ public class Unicode {
 			String line = "";
 			while ((line = buffReader.readLine()) != null) {
 				bufferedWriter.write(StringEscapeUtils.escapeJava(line));
-				bufferedWriter.write(System.getProperty("line.separator"));
+				bufferedWriter.write(System.lineSeparator());
 			}
 		} catch (FileNotFoundException e) {
 			e.printStackTrace();

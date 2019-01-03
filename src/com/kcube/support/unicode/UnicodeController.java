@@ -125,12 +125,12 @@ public class UnicodeController {
 			if (hangul.isSelected()) {
 				while ((line = buffReader.readLine()) != null) {
 					stringBuilder.append(StringEscapeUtils.unescapeJava(line));
-					stringBuilder.append(System.getProperty("line.separator"));
+					stringBuilder.append(System.lineSeparator());
 				}
 			} else if (unicode.isSelected()) {
 				while ((line = buffReader.readLine()) != null) {
 					stringBuilder.append(StringEscapeUtils.escapeJava(line));
-					stringBuilder.append(System.getProperty("line.separator"));
+					stringBuilder.append(System.lineSeparator());
 				}
 			}
 
@@ -183,12 +183,12 @@ public class UnicodeController {
 			if (hangul.isSelected()) {
 				while ((line = buffReader.readLine()) != null) {
 					stringBuilder.append(StringEscapeUtils.unescapeJava(line));
-					stringBuilder.append(System.getProperty("line.separator"));
+					stringBuilder.append(System.lineSeparator());
 				}
 			} else if (unicode.isSelected()) {
 				while ((line = buffReader.readLine()) != null) {
 					stringBuilder.append(StringEscapeUtils.escapeJava(line));
-					stringBuilder.append(System.getProperty("line.separator"));
+					stringBuilder.append(System.lineSeparator());
 				}
 			}
 		} catch (Exception e) {
