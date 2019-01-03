@@ -64,17 +64,17 @@ public class AES implements Crypto {
 		final int length = key.getBytes().length;
 		if (method.equals("AES-128")) {
 			if (length != AES128_KEY_LENGTH) {
-				AlertUtil.showAndWaitForError("AES-128 키 길이를 확인해주세요.");
+				AlertUtil.showAndWaitForError("키 길이를 확인해주세요.\nAES-128 키 길이는 16 byte 입니다.");
 				throw new KeyException("AES-128 키 길이를 확인해주세요.");
 			}
 		} else if (method.equals("AES-192")) {
 			if (length != AES192_KEY_LENGTH) {
-				AlertUtil.showAndWaitForError("AES-192 키 길이를 확인해주세요.");
+				AlertUtil.showAndWaitForError("키 길이를 확인해주세요.\nAES-192 키 길이는 24 byte 입니다.");
 				throw new KeyException("AES-192 키 길이를 확인해주세요.");
 			}
 		} else if (method.equals("AES-256")) {
 			if (length != AES256_KEY_LENGTH) {
-				AlertUtil.showAndWaitForError("AES-256 키 길이를 확인해주세요.");
+				AlertUtil.showAndWaitForError("키 길이를 확인해주세요.\nAES-256 키 길이는 32 byte 입니다.");
 				throw new KeyException("AES-256 키 길이를 확인해주세요.");
 			}
 		}
