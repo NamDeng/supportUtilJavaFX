@@ -6,6 +6,7 @@ import java.util.List;
 import com.kcube.support.MainStage;
 import com.kcube.support.Support;
 import com.kcube.support.util.AlertUtil;
+import com.kcube.support.util.StringBuilderUtil;
 
 import javafx.collections.FXCollections;
 import javafx.collections.ListChangeListener;
@@ -61,12 +62,12 @@ public class JDKController {
 	private void print() {
 		final int size = fileList.getItems().size();
 		if (size > 0) {
-			final StringBuilder stringBuilder = new StringBuilder();
+			final StringBuilderUtil sbu = new StringBuilderUtil();
 			for (int i = 0; i < size; i++) {
 				final String path = fileList.getItems().get(i);
-				stringBuilder.append(JDK.getClassFileVersion(path));
+				sbu.appendLine(JDK.getClassFileVersion(path));
 			}
-			resultArea.setText(stringBuilder.toString());
+			resultArea.setText(sbu.toString());
 		} else {
 			resultArea.clear();
 		}

@@ -1,9 +1,7 @@
 package com.kcube.support.patch;
 
 import java.io.FileNotFoundException;
-import java.io.FileWriter;
 import java.io.IOException;
-import java.nio.file.FileAlreadyExistsException;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
@@ -25,6 +23,8 @@ import org.apache.commons.lang3.StringUtils;
 import com.kcube.support.jdk.JDK;
 import com.kcube.support.unicode.Unicode;
 import com.kcube.support.util.AlertUtil;
+import com.kcube.support.util.LogFileUtil;
+import com.kcube.support.util.StringBuilderUtil;
 
 public class Patch {
 	public static final String[] SOURCE_TYPE = { "ext", "app" };
@@ -132,14 +132,12 @@ public class Patch {
 	 *
 	 * @param destPath
 	 * @param fileList
-	 * @throws IOException
+	 * @throws Exception
 	 */
-	StringBuilder copySrcFile(final List<Path> fileList, final FileWriter log) throws IOException {
-		log.write(System.lineSeparator());
-		log.write("[ copy src ]");
-		log.write(System.lineSeparator());
+	String copySrcFile(final List<Path> fileList, final LogFileUtil log) throws Exception {
+		log.writeln("[ src ]");
 
-		final StringBuilder result = new StringBuilder();
+		final StringBuilderUtil result = new StringBuilderUtil();
 		fileList.stream().forEach(new Consumer<Path>() {
 
 			@Override
@@ -175,41 +173,34 @@ public class Patch {
 										final Path dest = destParent.resolve(file.getFileName());
 										try {
 											Files.copy(file, dest, StandardCopyOption.REPLACE_EXISTING);
-											result.append(dest + " 파일 복사 성공");
+											result.appendLine(dest + " 파일 복사 성공");
 
-											// log
-											log.write(getPath(WEB_INF, CLASSES, relativePath.getParent().toString(), copyFileName));
-											log.write(System.lineSeparator());
-										} catch (IOException e) {
-											result.append(dest + " 파일 복사 실패");
+											log.writeln(getPath(WEB_INF, CLASSES, relativePath.getParent().toString(), copyFileName));
+										} catch (Exception e) {
+											result.appendLine(dest + " 파일 복사 실패");
 										}
-										result.append(System.lineSeparator());
 									}
 								}
 							});
 						} else if (Unicode.isPropertiesFile(destPath.toString())) {
 							Unicode.convertToUnicodeFile(binPath.toFile(), destPath.toFile());
-							result.append(destPath + " 파일 복사 성공");
+							result.appendLine(destPath + " 파일 복사 성공");
 
-							// log
-							log.write(getPath(WEB_INF, CLASSES, relativePath.toString()));
+							log.writeln(getPath(WEB_INF, CLASSES, relativePath.toString()));
 						} else {
 							Files.copy(binPath, destPath, StandardCopyOption.REPLACE_EXISTING);
-							result.append(destPath + " 파일 복사 성공");
+							result.appendLine(destPath + " 파일 복사 성공");
 
-							// log
-							log.write(getPath(WEB_INF, CLASSES, relativePath.toString()));
+							log.writeln(getPath(WEB_INF, CLASSES, relativePath.toString()));
 						}
-						log.write(System.lineSeparator());
 					}
-				} catch (IOException e) {
-					result.append(destPath + " 파일 복사 실패");
+				} catch (Exception e) {
+					result.appendLine(destPath + " 파일 복사 실패");
 				}
-				result.append(System.lineSeparator());
 			}
 		});
 
-		return result;
+		return result.toString();
 	}
 
 	/**
@@ -218,14 +209,12 @@ public class Patch {
 	 * @param destPath
 	 * @param fileList
 	 * @return
-	 * @throws IOException
+	 * @throws Exception
 	 */
-	StringBuilder copyWebFile(final List<Path> fileList, final FileWriter log) throws IOException {
-		log.write(System.lineSeparator());
-		log.write("[ copy web ]");
-		log.write(System.lineSeparator());
+	String copyWebFile(final List<Path> fileList, final LogFileUtil log) throws Exception {
+		log.writeln("[ web ]");
 
-		final StringBuilder result = new StringBuilder();
+		final StringBuilderUtil result = new StringBuilderUtil();
 		fileList.stream().forEach(new Consumer<Path>() {
 
 			@Override
@@ -240,22 +229,16 @@ public class Patch {
 							Files.createDirectories(destPath.getParent());
 						}
 						Files.copy(path, destPath, StandardCopyOption.REPLACE_EXISTING);
-						result.append(destPath + " 파일 복사 성공");
+						result.appendLine(destPath + " 파일 복사 성공");
 
-						// log 남기기
-						log.write(relativePath.toString());
-						log.write(System.lineSeparator());
+						log.writeln(relativePath.toString());
 					}
-				} catch (FileAlreadyExistsException faee) {
-					result.append(destPath + " 파일이 이미 존재함");
-
-				} catch (IOException e) {
-					result.append(destPath + " 파일 복사 실패");
+				} catch (Exception e) {
+					result.appendLine(destPath + " 파일 복사 실패");
 				}
-				result.append(System.lineSeparator());
 			}
 		});
-		return result;
+		return result.toString();
 	}
 
 	/**
@@ -290,8 +273,8 @@ public class Patch {
 			throw new ValidationException("변경 기준일을 입력하지 않았습니다.");
 		}
 		if(!Files.exists(Paths.get(this.destPath))) {
-			AlertUtil.showAndWaitForError("존재하지 않는 패치 파일 생성 경로입니다.");
-			throw new ValidationException("존재하지 않는 패치 파일 생성 경로입니다.");
+			AlertUtil.showAndWaitForError("패치 파일 생성 경로가 존재하지 않습니다.");
+			throw new ValidationException("패치 파일 생성 경로가 존재하지 않습니다.");
 		}
 	}
 
