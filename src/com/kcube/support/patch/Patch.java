@@ -33,13 +33,17 @@ public class Patch {
 	private static final String WEB = "web";
 	private static final String CST = "cst";
 	private static final String BIN = "bin";
+
 	private static final String WEB_INF = "WEB-INF";
 	private static final String CLASSES = "classes";
+	private static final String R5_APP = "r5-app";
+	private static final String CUSTOMIZE = "customize";
 
 	private Path webPath;
 	private Path srcPath;
 	private Path classPath;
 	private Path binPath;
+	private Path confPath;
 
 	private String workspacePath;
 	private String destPath;
@@ -71,11 +75,13 @@ public class Patch {
 				: getPath(workspacePath, this.projectName, WEB);
 		final String binPath = getPath(workspacePath, BIN);
 		final String classPath = getPath(this.destPath, WEB_INF, CLASSES);
+		final String confPath = getPath(this.destPath, WEB_INF, CLASSES, R5_APP, CUSTOMIZE);
 
 		this.srcPath = Paths.get(SrcPath);
 		this.webPath = Paths.get(WebPath);
 		this.binPath = Paths.get(binPath);
 		this.classPath = Paths.get(classPath);
+		this.confPath = Paths.get(confPath);
 	}
 
 	/**
@@ -142,22 +148,22 @@ public class Patch {
 
 			@Override
 			public void accept(Path path) {
-				// srcPath 기준 상대 경로
+				// srcPath를 기준으로 상대 경로
 				final Path relativePath = getSrcPath().relativize(path);
-				// bin 디렉토리 기준 복사할 소스 경로
-				final Path binPath = getBinPath().resolve(relativePath);
-				// 패치 파일 복사 경로
-				final Path destPath = getClassPath().resolve(relativePath);
-				try {
-					if (isFile(destPath)) {
-						final Path destParent = destPath.getParent();
-						if (Files.notExists(destParent)) {
-							Files.createDirectories(destParent);
-						}
 
-						if (JDK.isJavaFile(destPath.toString())) {
+				// 상대 경로를 기준으로 각 경로를 구한다(workspace bin, classes, conf)
+				final Path binPath = getBinPath().resolve(relativePath);
+				final Path classesPath = getClassPath().resolve(relativePath);
+				try {
+					if (isFile(classesPath)) {
+						final String fileName = classesPath.getFileName().toString();
+						final Path destParent = classesPath.getParent();
+
+						if (JDK.isJavaFile(classesPath.toString())) {
+							if (Files.notExists(destParent)) {
+								Files.createDirectories(destParent);
+							}
 							// 확장자를 제외한 파일명 추출
-							final String fileName = destPath.getFileName().toString();
 							final String splitFileName = fileName.substring(0, fileName.lastIndexOf("."));
 							// 추출한 파일명으로 정규식으로 class파일 binPath에서 찾아서 복사
 							final String regex = "(^(" + splitFileName + ")(.class))|(^(" + splitFileName + ")(\\$){1}[a-zA-Z1-9]*(.class))";
@@ -182,25 +188,56 @@ public class Patch {
 									}
 								}
 							});
-						} else if (Unicode.isPropertiesFile(destPath.toString())) {
-							Unicode.convertToUnicodeFile(binPath.toFile(), destPath.toFile());
-							result.appendLine(destPath + " 파일 복사 성공");
+						} else if (Unicode.isPropertiesFile(classesPath.toString())) {
+							if (Files.notExists(destParent)) {
+								Files.createDirectories(destParent);
+							}
+
+							Unicode.convertToUnicodeFile(binPath.toFile(), classesPath.toFile());
+							result.appendLine(classesPath + " 파일 복사 성공");
 
 							log.writeln(getPath(WEB_INF, CLASSES, relativePath.toString()));
+						} else if (Patch.isAppConfXMLFile(classesPath)) {
+							if (Files.notExists(getConfPath())) {
+								Files.createDirectories(getConfPath());
+							}
+
+							final Path confPath = getConfPath().resolve(fileName);
+							Files.copy(binPath, confPath, StandardCopyOption.REPLACE_EXISTING);
+							result.appendLine(confPath + " 파일 복사 성공");
+
+							log.writeln(getPath(WEB_INF, CLASSES, R5_APP, CUSTOMIZE, fileName));
+
 						} else {
-							Files.copy(binPath, destPath, StandardCopyOption.REPLACE_EXISTING);
-							result.appendLine(destPath + " 파일 복사 성공");
+							if (Files.notExists(destParent)) {
+								Files.createDirectories(destParent);
+							}
+
+							Files.copy(binPath, classesPath, StandardCopyOption.REPLACE_EXISTING);
+							result.appendLine(classesPath + " 파일 복사 성공");
 
 							log.writeln(getPath(WEB_INF, CLASSES, relativePath.toString()));
 						}
 					}
 				} catch (Exception e) {
-					result.appendLine(destPath + " 파일 복사 실패");
+					result.appendLine(classesPath + " 파일 복사 실패");
 				}
 			}
 		});
 
 		return result.toString();
+	}
+
+	/**
+	 * App conf 파일인지 확인
+	 *
+	 * @param path
+	 * @return
+	 */
+	protected static boolean isAppConfXMLFile(Path path) {
+		final String fileName = path.getFileName().toString();
+
+		return fileName.contains(".conf.xml");
 	}
 
 	/**
@@ -288,6 +325,10 @@ public class Patch {
 
 	public Path getBinPath() {
 		return binPath;
+	}
+
+	public Path getConfPath() {
+		return confPath;
 	}
 
 	public String getSourcePath() {
