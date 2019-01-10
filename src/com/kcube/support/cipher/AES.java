@@ -2,7 +2,6 @@ package com.kcube.support.cipher;
 
 import java.security.Key;
 import java.security.KeyException;
-import java.util.Base64;
 
 import javax.crypto.Cipher;
 import javax.crypto.spec.SecretKeySpec;
@@ -19,25 +18,24 @@ public class AES implements Crypto {
 	private static final String ALGORITHM = "AES";
 	private static final String CHARSET_NAME = "UTF-8";
 
-	private Key secureKey;
+	private Key secretKey;
+	private int secretKeyLength;
 
 	public AES(final String method, final String key) throws Exception {
 		validateSecretKey(method, key);
 
 		SecretKeySpec keySpec = new SecretKeySpec(key.getBytes(), "AES");
-		this.secureKey = keySpec;
+		this.secretKey = keySpec;
 	}
 
 	@Override
 	public String encrypt(final String plainText) throws Exception {
 		try {
-			final Cipher cipher = Cipher.getInstance(ALGORITHM);
-			cipher.init(Cipher.ENCRYPT_MODE, secureKey);
+			Cipher cipher = Cipher.getInstance(ALGORITHM);
+			cipher.init(Cipher.ENCRYPT_MODE, secretKey);
 
-			final byte[] cipherText = cipher.doFinal(plainText.getBytes(CHARSET_NAME));
-			final String encryptedString = new String(Base64.getEncoder().encode(cipherText));
-
-			return encryptedString;
+			byte[] cipherText = cipher.doFinal(plainText.getBytes(CHARSET_NAME));
+			return bytesToHex(cipherText);
 		} catch (IllegalArgumentException e) {
 			AlertUtil.showAndWaitForError("입력값이 올바르지 않습니다.");
 			throw new Exception();
@@ -47,13 +45,10 @@ public class AES implements Crypto {
 	@Override
 	public String decrypt(final String cypherText) throws Exception {
 		try {
-			final Cipher cipher = Cipher.getInstance(ALGORITHM);
-			cipher.init(Cipher.DECRYPT_MODE, secureKey);
+			Cipher cipher = Cipher.getInstance(ALGORITHM);
+			cipher.init(Cipher.DECRYPT_MODE, secretKey);
 
-			final byte[] cipherText = Base64.getDecoder().decode(cypherText.getBytes());
-			final String decryptedString = new String(cipher.doFinal(cipherText), CHARSET_NAME);
-
-			return decryptedString;
+			return new String(cipher.doFinal(hexToBytes(cypherText)));
 		} catch (IllegalArgumentException e) {
 			AlertUtil.showAndWaitForError("입력값이 올바르지 않습니다.");
 			throw new Exception();
@@ -61,22 +56,70 @@ public class AES implements Crypto {
 	}
 
 	private void validateSecretKey(final String method, final String key) throws KeyException {
-		final int length = key.getBytes().length;
+		secretKeyLength = key.getBytes().length;
 		if (method.equals("AES-128")) {
-			if (length != AES128_KEY_LENGTH) {
+			if (secretKeyLength != AES128_KEY_LENGTH) {
 				AlertUtil.showAndWaitForError("키 길이를 확인해주세요.\nAES-128 키 길이는 16 byte 입니다.");
 				throw new KeyException("AES-128 키 길이를 확인해주세요.");
 			}
 		} else if (method.equals("AES-192")) {
-			if (length != AES192_KEY_LENGTH) {
+			if (secretKeyLength != AES192_KEY_LENGTH) {
 				AlertUtil.showAndWaitForError("키 길이를 확인해주세요.\nAES-192 키 길이는 24 byte 입니다.");
 				throw new KeyException("AES-192 키 길이를 확인해주세요.");
 			}
 		} else if (method.equals("AES-256")) {
-			if (length != AES256_KEY_LENGTH) {
+			if (secretKeyLength != AES256_KEY_LENGTH) {
 				AlertUtil.showAndWaitForError("키 길이를 확인해주세요.\nAES-256 키 길이는 32 byte 입니다.");
 				throw new KeyException("AES-256 키 길이를 확인해주세요.");
 			}
 		}
+	}
+
+	/**
+	 *
+	 * @param data
+	 * @return
+	 */
+	private String bytesToHex(byte[] data)
+	{
+		if (data == null)
+		{
+			return null;
+		}
+		int len = data.length;
+		StringBuffer str = new StringBuffer();
+
+		for (int i = 0; i < len; i++)
+		{
+			if ((data[i] & 0xFF) < 16)
+			{
+				str.append("0").append(Integer.toHexString(data[i] & 0xFF));
+			}
+			else
+			{
+				str.append(Integer.toHexString(data[i] & 0xFF));
+			}
+		}
+
+		return str.toString();
+	}
+
+	/**
+	 * hex string을 bytes array로 변환한다.
+	 */
+	public static byte[] hexToBytes(String str)
+	{
+		if (str == null || str.length() < 2)
+		{
+			return null;
+		}
+		int len = str.length() / 2;
+		byte[] buffer = new byte[len];
+		for (int i = 0; i < len; i++)
+		{
+			buffer[i] = (byte) Integer.parseInt(str.substring(i * 2, i * 2 + 2), 16);
+		}
+		return buffer;
+
 	}
 }
