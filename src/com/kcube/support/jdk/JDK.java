@@ -60,7 +60,7 @@ public class JDK {
 			int magicNum = in.readInt();
 			if (magicNum != 0xcafebabe) {
 				stringJoiner.add(Paths.get(path).getFileName().toString());
-				stringJoiner.add("올바르지 않은 파일입니다." + System.lineSeparator());
+				stringJoiner.add("올바르지 않은 파일입니다.");
 
 				return stringJoiner.toString();
 			}
@@ -68,7 +68,7 @@ public class JDK {
 			final int minorVersion = in.readUnsignedShort();
 			final int majorVersion = in.readUnsignedShort();
 			stringJoiner.add(Paths.get(path).getFileName().toString());
-			stringJoiner.add(getVersion(majorVersion) + System.lineSeparator());
+			stringJoiner.add(getVersion(majorVersion));
 		} catch (Exception e) {
 			return e.getMessage();
 		}

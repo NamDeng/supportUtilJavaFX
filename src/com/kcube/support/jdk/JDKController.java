@@ -6,6 +6,7 @@ import java.util.List;
 import com.kcube.support.MainStage;
 import com.kcube.support.Support;
 import com.kcube.support.util.AlertUtil;
+import com.kcube.support.util.FileUtil;
 import com.kcube.support.util.StringBuilderUtil;
 
 import javafx.collections.FXCollections;
@@ -109,7 +110,7 @@ public class JDKController {
 			success = true;
 			for (File file : board.getFiles()) {
 				final String path = file.getAbsolutePath();
-				if (!JDK.isClassFile(path))
+				if (!FileUtil.checkExteionsion(path, "class"))
 					AlertUtil.showAndWaitForError(file.getName(), "파일을 추가할 수 없습니다. \nclass 파일만 추가할 수 있습니다.");
 
 				fileList.getItems().add(path);
