@@ -17,7 +17,7 @@
       <Pane layoutX="252.0" layoutY="194.0" prefHeight="81.0" prefWidth="927.0">
          <children>
             <TextField fx:id="aesField" layoutY="31.0" prefHeight="43.0" prefWidth="552.0" />
-            <TextField fx:id="secureKeyField" layoutX="564.0" layoutY="31.0" prefHeight="43.0" prefWidth="235.0" />
+            <TextField fx:id="secureKeyField" layoutX="564.0" layoutY="31.0" prefHeight="43.0" prefWidth="235.0" text="7654329876543210" />
             <Button fx:id="aesBtn" layoutX="807.0" layoutY="31.0" mnemonicParsing="false" onAction="#printAESResult" prefHeight="43.0" prefWidth="120.0" text="AES 변환" />
             <Label layoutX="564.0" layoutY="-10.0" prefHeight="43.0" prefWidth="180.0" styleClass="support-label" text="양방향 개인키 :" />
             <Label styleClass="support-label" text="AES 변환값 입력 :" />
@@ -55,7 +55,7 @@
                         <Insets />
                      </VBox.margin>
                   </Label>
-                  <RadioButton fx:id="sha224Encryption" contentDisplay="CENTER" mnemonicParsing="false" prefHeight="33.0" prefWidth="220.0" selected="true" styleClass="support-label" text="SHA-224">
+                  <RadioButton fx:id="sha224Encryption" contentDisplay="CENTER" mnemonicParsing="false" prefHeight="33.0" prefWidth="220.0" styleClass="support-label" text="SHA-224">
                      <padding>
                         <Insets left="10.0" top="10.0" />
                      </padding>
@@ -68,12 +68,12 @@
                         <Insets left="10.0" top="10.0" />
                      </padding>
                   </RadioButton>
-                  <RadioButton fx:id="sha384Encryption" contentDisplay="CENTER" mnemonicParsing="false" prefHeight="33.0" prefWidth="220.0" selected="true" styleClass="support-label" text="SHA-384" toggleGroup="$shaGroup">
+                  <RadioButton fx:id="sha384Encryption" contentDisplay="CENTER" mnemonicParsing="false" prefHeight="33.0" prefWidth="220.0" styleClass="support-label" text="SHA-384" toggleGroup="$shaGroup">
                      <padding>
                         <Insets left="10.0" top="10.0" />
                      </padding>
                   </RadioButton>
-                  <RadioButton fx:id="sha512Encryption" contentDisplay="CENTER" mnemonicParsing="false" prefHeight="33.0" prefWidth="220.0" selected="true" styleClass="support-label" text="SHA-512" toggleGroup="$shaGroup">
+                  <RadioButton fx:id="sha512Encryption" contentDisplay="CENTER" mnemonicParsing="false" prefHeight="33.0" prefWidth="220.0" styleClass="support-label" text="SHA-512" toggleGroup="$shaGroup">
                      <padding>
                         <Insets left="10.0" top="10.0" />
                      </padding>
@@ -94,7 +94,7 @@
                         <Insets />
                      </VBox.margin>
                   </Label>
-                  <RadioButton fx:id="aes128Encryption" contentDisplay="CENTER" mnemonicParsing="false" prefHeight="33.0" prefWidth="220.0" selected="true" styleClass="support-label" text="AES-128">
+                  <RadioButton fx:id="aes128Encryption" contentDisplay="CENTER" mnemonicParsing="false" prefHeight="33.0" prefWidth="220.0" styleClass="support-label" text="AES-128">
                      <padding>
                         <Insets left="10.0" top="10.0" />
                      </padding>
@@ -102,18 +102,18 @@
                         <ToggleGroup fx:id="aesGroup" />
                      </toggleGroup>
                   </RadioButton>
-                  <RadioButton fx:id="aes192Encryption" contentDisplay="CENTER" mnemonicParsing="false" prefHeight="33.0" prefWidth="220.0" selected="true" styleClass="support-label" text="AES-192" toggleGroup="$aesGroup">
+                  <RadioButton fx:id="aes192Encryption" contentDisplay="CENTER" mnemonicParsing="false" prefHeight="33.0" prefWidth="220.0" styleClass="support-label" text="AES-192" toggleGroup="$aesGroup">
                      <padding>
                         <Insets left="10.0" top="10.0" />
                      </padding>
                   </RadioButton>
-                  <RadioButton fx:id="aes256Encryption" contentDisplay="CENTER" mnemonicParsing="false" prefHeight="33.0" prefWidth="220.0" selected="true" styleClass="support-label" text="AES-256" toggleGroup="$aesGroup">
+                  <RadioButton fx:id="aes256Encryption" contentDisplay="CENTER" mnemonicParsing="false" prefHeight="33.0" prefWidth="220.0" styleClass="support-label" text="AES-256" toggleGroup="$aesGroup">
                      <padding>
                         <Insets bottom="15.0" left="10.0" top="10.0" />
                      </padding>
                   </RadioButton>
                   <Label alignment="CENTER" contentDisplay="TOP" prefHeight="40.0" prefWidth="222.0" style="-fx-border-style: solid;" styleClass="support-label" text="AES 복호화" />
-                  <RadioButton fx:id="aes128Decryption" contentDisplay="CENTER" mnemonicParsing="false" prefHeight="33.0" prefWidth="221.0" styleClass="support-label" text="AES-128" toggleGroup="$aesGroup">
+                  <RadioButton fx:id="aes128Decryption" contentDisplay="CENTER" mnemonicParsing="false" prefHeight="33.0" prefWidth="221.0" selected="true" styleClass="support-label" text="AES-128" toggleGroup="$aesGroup">
                      <padding>
                         <Insets left="10.0" top="10.0" />
                      </padding>
