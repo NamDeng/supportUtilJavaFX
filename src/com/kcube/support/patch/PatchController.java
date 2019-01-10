@@ -103,8 +103,7 @@ public class PatchController {
 	 * @throws Exception
 	 */
 	public void addSourceDirectory(ActionEvent event) throws Exception {
-		final String path = getDirectoryPath();
-		sourcePathField.setText(path);
+		sourcePathField.setText(chooseDirectory());
 	}
 
 	/**
@@ -113,8 +112,7 @@ public class PatchController {
 	 * @throws Exception
 	 */
 	public void addDestDirectory(ActionEvent event) throws Exception {
-		final String path = getDirectoryPath();
-		destPathField.setText(path);
+		destPathField.setText(chooseDirectory());
 	}
 
 	/**
@@ -153,7 +151,7 @@ public class PatchController {
 	}
 
 	/**
-	 * 드래그 오버
+	 * 드래그 오버 이벤트 동작(워크스페이스 선택)
 	 *
 	 * @param event
 	 */
@@ -167,7 +165,7 @@ public class PatchController {
 	}
 
 	/**
-	 * 파일을 드래그 드랍방식으로 파추가한다.
+	 * 드래그 다운 이벤트 동작(워크스페이스 선택)
 	 *
 	 * @param event
 	 */
@@ -197,7 +195,7 @@ public class PatchController {
 	}
 
 	/**
-	 * 드래그 오버
+	 * 드래그 오버 이벤트 동작(패치 파일 경로 선택)
 	 *
 	 * @param event
 	 */
@@ -211,7 +209,7 @@ public class PatchController {
 	}
 
 	/**
-	 * 파일을 드래그 드랍방식으로 파추가한다.
+	 * 드래그 다운 이벤트 동작(패치 파일 경로 선택)
 	 *
 	 * @param event
 	 */
@@ -245,7 +243,7 @@ public class PatchController {
 	 *
 	 * @param event
 	 */
-	public String getDirectoryPath() throws Exception {
+	private String chooseDirectory() throws Exception {
 		final DirectoryChooser directoryChooser = new DirectoryChooser();
 		directoryChooser.setTitle("디렉토리 선택");
 		directoryChooser.setInitialDirectory(new File("C:\\"));

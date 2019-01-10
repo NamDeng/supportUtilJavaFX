@@ -48,23 +48,6 @@ public class JDK {
 		return true;
 	}
 
-
-	/**
-	 * Java 파일인지 확인한다.
-	 *
-	 * @param path
-	 * @return
-	 */
-	public static boolean isJavaFile(final String path) {
-		int lastIndexOf = path.lastIndexOf(".");
-		if (lastIndexOf == -1)
-			return false;
-		if (!path.substring(lastIndexOf + 1).equals("java"))
-			return false;
-
-		return true;
-	}
-
 	/**
 	 * Class 파일의 JDK 버전을 가져온다.
 	 *

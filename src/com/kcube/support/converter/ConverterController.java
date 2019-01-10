@@ -1,11 +1,11 @@
-package com.kcube.support.unicode;
+package com.kcube.support.converter;
 
 import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileInputStream;
-import java.io.FileReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
+import java.nio.charset.StandardCharsets;
 import java.util.Optional;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
@@ -35,7 +35,7 @@ import javafx.scene.input.TransferMode;
 import javafx.stage.FileChooser;
 import javafx.stage.FileChooser.ExtensionFilter;
 
-public class UnicodeController {
+public class ConverterController {
 
 	@FXML
 	private TextField encodeField;
@@ -58,11 +58,25 @@ public class UnicodeController {
 	@FXML
 	private RadioButton unicode;
 
+	private String[] CHARACTER_OPTION = { "unicode", "hangul" };
+
 	@FXML
 	public void initialize() {
+		initComponent();
 		initListener();
 	}
 
+	/**
+	 * 컴포넌트 옵션 초기화
+	 */
+	private void initComponent() {
+		unicode.setUserData(CHARACTER_OPTION[0]);
+		hangul.setUserData(CHARACTER_OPTION[1]);
+	}
+
+	/**
+	 * 컴포넌트 리스너 설정
+	 */
 	private void initListener() {
 		encodeField.textProperty().addListener((observable, oldValue, newValue) -> {
 			printEncodedUnicode(encodeField.getText());
@@ -73,13 +87,13 @@ public class UnicodeController {
 		});
 
 		filePathField.textProperty().addListener((observable, oldValue, newValue) -> {
-			printConvertCharacterInFile(filePathField.getText());
+			printConvertedCharacter(filePathField.getText());
 		});
 
 		option.selectedToggleProperty().addListener(new ChangeListener<Toggle>() {
 			@Override
 			public void changed(ObservableValue<? extends Toggle> observable, Toggle oldValue, Toggle newValue) {
-				printConvertCharacterInFile(filePathField.getText());
+				printConvertedCharacter(filePathField.getText());
 			}
 		});
 	}
@@ -89,7 +103,7 @@ public class UnicodeController {
 	 *
 	 * @param keyword
 	 */
-	private void markSearchKeyword(String keyword) {
+	private void markSearchKeyword(final String keyword) {
 		final String result = resultArea.getText();
 		if (StringUtils.isEmpty(result))
 			AlertUtil.showAndWaitForWarning("변환결과 조회", "변환 결과가 없습니다.\n properties 파일을 추가해주세요.");
@@ -97,10 +111,9 @@ public class UnicodeController {
 		if (StringUtils.isEmpty(keyword))
 			AlertUtil.showAndWaitForWarning("변환결과 조회", "키워드를 입력하지 않았습니다.");
 
-		Pattern pattern = Pattern.compile(keyword);
-		Matcher matcher = pattern.matcher(result);
-
-		boolean found = matcher.find(0);
+		final Pattern pattern = Pattern.compile(keyword);
+		final Matcher matcher = pattern.matcher(result);
+		final boolean found = matcher.find(0);
 		if (found && result.indexOf(keyword) == -1)
 			AlertUtil.showAndWaitForWarning("변환결과 조회", keyword + " 검색결과가 없습니다");
 
@@ -113,35 +126,47 @@ public class UnicodeController {
 	 *
 	 * @param path
 	 */
-	private void printConvertCharacterInFile(String path) {
+	private void printConvertedCharacter(final String path) {
 		if (StringUtils.isEmpty(path))
 			AlertUtil.showAndWaitForWarning("파일 선택", "선택된 파일이 없습니다.");
 
-		final StringBuilder stringBuilder = new StringBuilder();
-		try (InputStreamReader in = new InputStreamReader(new FileInputStream(path), "UTF8");
-				BufferedReader buffReader = new BufferedReader(in)) {
-
-			String line = "";
-			if (hangul.isSelected()) {
-				while ((line = buffReader.readLine()) != null) {
-					stringBuilder.append(StringEscapeUtils.unescapeJava(line));
-					stringBuilder.append(System.lineSeparator());
-				}
-			} else if (unicode.isSelected()) {
-				while ((line = buffReader.readLine()) != null) {
-					stringBuilder.append(StringEscapeUtils.escapeJava(line));
-					stringBuilder.append(System.lineSeparator());
-				}
-			}
-
-		} catch (Exception e) {
-			resultArea.setText(e.getMessage());
-		}
-		resultArea.setText(stringBuilder.toString());
+		resultArea.setText(getConvertedCharacter(path));
 	}
 
 	/**
-	 * 한글을 유니코드로 변경한다.
+	 * 파일을 읽어 선택 옵션에 맞는 문자로 변환하여 돌려준다.
+	 *
+	 * @param path
+	 * @return
+	 */
+	private String getConvertedCharacter(final String path) {
+		final StringBuffer stringBuffer = new StringBuffer();
+		try (InputStreamReader in = new InputStreamReader(new FileInputStream(path), StandardCharsets.UTF_8);
+				BufferedReader buffReader = new BufferedReader(in)) {
+
+			String line = "";
+			final RadioButton selected = (RadioButton) option.getSelectedToggle();
+			final String action = selected.getUserData().toString();
+			if (action.equals(CHARACTER_OPTION[0])) {
+				while ((line = buffReader.readLine()) != null) {
+					stringBuffer.append(StringEscapeUtils.escapeJava(line));
+					stringBuffer.append(System.lineSeparator());
+				}
+			} else if(action.equals(CHARACTER_OPTION[1])){
+				while ((line = buffReader.readLine()) != null) {
+					stringBuffer.append(StringEscapeUtils.unescapeJava(line));
+					stringBuffer.append(System.lineSeparator());
+				}
+			}
+		} catch (Exception e) {
+			stringBuffer.setLength(0);
+			stringBuffer.append(e.getMessage());
+		}
+		return stringBuffer.toString();
+	}
+
+	/**
+	 * 한글을 유니코드로 변경하여 출력
 	 *
 	 * @throws Exception
 	 */
@@ -153,7 +178,7 @@ public class UnicodeController {
 	}
 
 	/**
-	 * 유니코드를 한글로 변환한다.
+	 * 유니코드를 한글로 변경하여 출력
 	 *
 	 * @throws Exception
 	 */
@@ -175,26 +200,7 @@ public class UnicodeController {
 			return;
 		}
 
-		final StringBuilder stringBuilder = new StringBuilder();
-
-		try (FileReader fileReader = new FileReader(new File(path));
-				BufferedReader buffReader = new BufferedReader(fileReader)) {
-			String line = "";
-			if (hangul.isSelected()) {
-				while ((line = buffReader.readLine()) != null) {
-					stringBuilder.append(StringEscapeUtils.unescapeJava(line));
-					stringBuilder.append(System.lineSeparator());
-				}
-			} else if (unicode.isSelected()) {
-				while ((line = buffReader.readLine()) != null) {
-					stringBuilder.append(StringEscapeUtils.escapeJava(line));
-					stringBuilder.append(System.lineSeparator());
-				}
-			}
-		} catch (Exception e) {
-			resultArea.setText(e.getMessage());
-		}
-		resultArea.setText(stringBuilder.toString());
+		resultArea.setText(getConvertedCharacter(path));
 	}
 
 	/**

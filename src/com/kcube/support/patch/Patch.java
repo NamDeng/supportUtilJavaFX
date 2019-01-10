@@ -20,9 +20,9 @@ import javax.xml.bind.ValidationException;
 
 import org.apache.commons.lang3.StringUtils;
 
-import com.kcube.support.jdk.JDK;
-import com.kcube.support.unicode.Unicode;
+import com.kcube.support.converter.Converter;
 import com.kcube.support.util.AlertUtil;
+import com.kcube.support.util.FileUtil;
 import com.kcube.support.util.LogFileUtil;
 import com.kcube.support.util.StringBuilderUtil;
 
@@ -129,11 +129,13 @@ public class Patch {
 
 	/**
 	 * <pre>
-	 * 프로젝스소스/WEB-INF/classes 디렉토리 하위 파일을 복사한다.
+	 * 프로젝스소스/WEB-INF/classes 디렉토리 밑으로 파일을 복사한다.
 	 *
-	 * 1. java 파일은 매칭되는 class 파일 복사
+	 * [ src 파일 복사 규칙 ]
+	 * 1. java 파일명과 매칭되는 class 파일 복사
 	 * 2. properties 파일은 유니코드로 변경 후 파일 생성
-	 * 3. 그외 파일은 그냥 복사한다.
+	 * 3. app 설정 파일인 .conf.xml 파일은 customize 밑으로 복사
+	 * 4. 그외 파일 복사.
 	 * </pre>
 	 *
 	 * @param destPath
@@ -155,11 +157,11 @@ public class Patch {
 				final Path binPath = getBinPath().resolve(relativePath);
 				final Path classesPath = getClassPath().resolve(relativePath);
 				try {
-					if (isFile(classesPath)) {
+					if (FileUtil.isFile(classesPath)) {
 						final String fileName = classesPath.getFileName().toString();
 						final Path destParent = classesPath.getParent();
 
-						if (JDK.isJavaFile(classesPath.toString())) {
+						if (FileUtil.checkExteionsion(classesPath.toString(), "java")) {
 							if (Files.notExists(destParent)) {
 								Files.createDirectories(destParent);
 							}
@@ -188,16 +190,16 @@ public class Patch {
 									}
 								}
 							});
-						} else if (Unicode.isPropertiesFile(classesPath.toString())) {
+						} else if (FileUtil.checkExteionsion(classesPath.toString(), "properties")) {
 							if (Files.notExists(destParent)) {
 								Files.createDirectories(destParent);
 							}
 
-							Unicode.convertToUnicodeFile(binPath.toFile(), classesPath.toFile());
+							Converter.convertToUnicodeFile(binPath.toFile(), classesPath.toFile());
 							result.appendLine(classesPath + " 파일 복사 성공");
 
 							log.writeln(getPath(WEB_INF, CLASSES, relativePath.toString()));
-						} else if (Patch.isAppConfXMLFile(classesPath)) {
+						} else if (FileUtil.isAppConfXML(classesPath)) {
 							if (Files.notExists(getConfPath())) {
 								Files.createDirectories(getConfPath());
 							}
@@ -229,18 +231,6 @@ public class Patch {
 	}
 
 	/**
-	 * App conf 파일인지 확인
-	 *
-	 * @param path
-	 * @return
-	 */
-	protected static boolean isAppConfXMLFile(Path path) {
-		final String fileName = path.getFileName().toString();
-
-		return fileName.contains(".conf.xml");
-	}
-
-	/**
 	 * web 소스 파일을 복사한다.
 	 *
 	 * @param destPath
@@ -261,7 +251,7 @@ public class Patch {
 				// 패치 파일 복사 경로
 				final Path destPath = Paths.get(getDestPath()).resolve(relativePath);
 				try {
-					if (isFile(destPath)) {
+					if (FileUtil.isFile(destPath)) {
 						if (Files.notExists(destPath.getParent())) {
 							Files.createDirectories(destPath.getParent());
 						}
@@ -279,16 +269,7 @@ public class Patch {
 	}
 
 	/**
-	 * 파일인지 확인한다.
-	 *
-	 * @param path
-	 * @return
-	 */
-	boolean isFile(final Path path) {
-		return path.toString().contains(".");
-	}
-
-	/**
+	 * 폼 입력 유효성 검사
 	 *
 	 * @throws ValidationException
 	 */
