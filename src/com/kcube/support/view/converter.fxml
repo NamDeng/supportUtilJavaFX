@@ -15,23 +15,23 @@
 <AnchorPane onKeyPressed="#onKeyPress" prefHeight="800.0" prefWidth="1200.0" xmlns="http://javafx.com/javafx/8.0.141" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.kcube.support.converter.ConverterController">
    <children>
       <Pane layoutX="89.0" layoutY="25.0" />
-      <Pane layoutX="7.0" layoutY="11.0" prefHeight="71.0" prefWidth="1188.0">
+      <Pane layoutX="20.0" layoutY="82.0" prefHeight="71.0" prefWidth="1174.0">
          <children>
-            <Label layoutX="-1.0" layoutY="25.0" styleClass="support-label" text="한글 - &gt; 유니코드" />
-            <TextField fx:id="encodeField" layoutX="132.0" layoutY="15.0" prefHeight="43.0" prefWidth="1042.0" />
+            <Label layoutX="-1.0" layoutY="25.0" prefHeight="23.0" prefWidth="129.0" styleClass="support-label" text="한글 → 유니코드" />
+            <TextField fx:id="encodeField" layoutX="120.0" layoutY="15.0" prefHeight="43.0" prefWidth="1042.0" />
          </children>
       </Pane>
-      <Pane layoutX="7.0" layoutY="82.0" prefHeight="71.0" prefWidth="1188.0">
+      <Pane layoutX="14.0" layoutY="145.0" prefHeight="71.0" prefWidth="1181.0">
          <children>
-            <Label layoutX="-1.0" layoutY="25.0" styleClass="support-label" text="유니코드 -&gt; 한글" />
-            <TextField fx:id="decodeField" layoutX="132.0" layoutY="15.0" prefHeight="43.0" prefWidth="1042.0" />
+            <Label layoutX="-1.0" layoutY="25.0" styleClass="support-label" text="유니코드 → 한글" />
+            <TextField fx:id="decodeField" layoutX="125.0" layoutY="15.0" prefHeight="43.0" prefWidth="1042.0" />
          </children>
       </Pane>
-      <Button layoutX="14.0" layoutY="162.0" mnemonicParsing="false" onAction="#addChooseFiles" prefHeight="40.0" prefWidth="117.0" styleClass="support-btn" text="파일 선택" />
-      <TextField fx:id="filePathField" editable="false" layoutX="139.0" layoutY="161.0" onDragDropped="#onDragDropFile" onDragOver="#onDragOver" prefHeight="43.0" prefWidth="1042.0" />
-      <TextArea fx:id="resultArea" editable="false" layoutX="139.0" layoutY="213.0" onDragDropped="#onDragDropFile" onDragOver="#onDragOver" prefHeight="519.0" prefWidth="1042.0" />
+      <Button layoutX="14.0" layoutY="224.0" mnemonicParsing="false" onAction="#addChooseFiles" prefHeight="40.0" prefWidth="117.0" styleClass="support-btn" text="파일 선택" />
+      <TextField fx:id="filePathField" layoutX="139.0" layoutY="222.0" onDragDropped="#onDragDropFile" onDragOver="#onDragOver" prefHeight="43.0" prefWidth="1042.0" />
+      <TextArea fx:id="resultArea" editable="false" layoutX="139.0" layoutY="279.0" onDragDropped="#onDragDropFile" onDragOver="#onDragOver" prefHeight="453.0" prefWidth="1042.0" />
       <Button layoutX="990.0" layoutY="750.0" mnemonicParsing="false" onAction="#moveMainPage" prefHeight="36.0" prefWidth="191.0" styleClass="main-btn-blue" text="초기화면으로 이동" />
-      <HBox layoutX="11.0" layoutY="215.0" prefHeight="272.0" prefWidth="122.0">
+      <HBox layoutX="11.0" layoutY="280.0" prefHeight="272.0" prefWidth="122.0">
          <children>
             <VBox prefHeight="272.0" prefWidth="139.0" style="-fx-border-style: solid;">
                <children>
@@ -53,5 +53,6 @@
             </VBox>
          </children>
       </HBox>
+      <Label alignment="CENTER" contentDisplay="CENTER" layoutX="14.0" layoutY="25.0" prefHeight="55.0" prefWidth="1165.0" style="-fx-border-style: solid;" text="※ 자바 표준 방식(natvie2ascii)이 아니므로 서버 배포 금지. (참고용)" textFill="#ee0000" underline="true" />
    </children>
 </AnchorPane>
