@@ -4,6 +4,7 @@ import java.security.Key;
 import java.security.KeyException;
 
 import javax.crypto.Cipher;
+import javax.crypto.IllegalBlockSizeException;
 import javax.crypto.spec.SecretKeySpec;
 
 import com.kcube.support.util.AlertUtil;
@@ -36,8 +37,8 @@ public class AES implements Crypto {
 
 			byte[] cipherText = cipher.doFinal(plainText.getBytes(CHARSET_NAME));
 			return bytesToHex(cipherText);
-		} catch (IllegalArgumentException e) {
-			AlertUtil.showAndWaitForError("입력값이 올바르지 않습니다.");
+		} catch (IllegalBlockSizeException | IllegalArgumentException e) {
+			AlertUtil.showAndWaitForError("입력값을 확인해주세요.");
 			throw new Exception();
 		}
 	}
@@ -49,8 +50,8 @@ public class AES implements Crypto {
 			cipher.init(Cipher.DECRYPT_MODE, secretKey);
 
 			return new String(cipher.doFinal(hexToBytes(cypherText)));
-		} catch (IllegalArgumentException e) {
-			AlertUtil.showAndWaitForError("입력값이 올바르지 않습니다.");
+		} catch (IllegalBlockSizeException | IllegalArgumentException e) {
+			AlertUtil.showAndWaitForError("입력값을 확인해주세요.");
 			throw new Exception();
 		}
 	}

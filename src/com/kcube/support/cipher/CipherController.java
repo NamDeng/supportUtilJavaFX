@@ -104,7 +104,7 @@ public class CipherController {
 	 * 컴포넌트 초기화
 	 */
 	private void initComponent() {
-		// AES 암호화 알고리즘 암복호화 구분 초기 값
+		// init option default data
 		aes128Encryption.setUserData(ENCRYPT);
 		aes128Decryption.setUserData(DECRYPT);
 		aes192Encryption.setUserData(ENCRYPT);
