@@ -1,7 +1,7 @@
 package com.kcube.support;
 
 public class Support {
-	public static final String TITLE = "기술지원 유틸 v1.1";
+	public static final String TITLE = "기술지원 유틸 v1.2";
 
 	public static final String MAIN_PAGE_URL = "view/main.fxml";
 	public static final String MAIN_LAYOUT_URL = "view/layout.fxml";

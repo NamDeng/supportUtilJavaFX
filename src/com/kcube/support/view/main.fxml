@@ -9,7 +9,7 @@
 <AnchorPane prefHeight="800.0" prefWidth="1200.0" xmlns="http://javafx.com/javafx/8.0.141" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.kcube.support.main.MainController">
    <children>
       <Pane layoutX="89.0" layoutY="25.0" />
-      <Label layoutX="29.0" layoutY="25.0" prefHeight="49.0" prefWidth="552.0" styleClass="main-label" text="기술지원 유틸 v1.1" />
+      <Label layoutX="29.0" layoutY="25.0" prefHeight="49.0" prefWidth="552.0" styleClass="main-label" />
       <ButtonBar layoutX="7.0" layoutY="98.0" prefHeight="200.0" prefWidth="955.0">
          <buttons>
             <Button mnemonicParsing="false" onAction="#moveJdkPage" prefHeight="235.0" prefWidth="235.0" styleClass="main-btn" text="JDK 버전 확인" />
