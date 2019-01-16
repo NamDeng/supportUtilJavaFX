@@ -11,6 +11,7 @@ import com.kcube.support.MainStage;
 import com.kcube.support.Support;
 import com.kcube.support.util.AlertUtil;
 import com.kcube.support.util.LogFileUtil;
+import com.kcube.support.util.StringBuilderUtil;
 
 import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
@@ -132,16 +133,16 @@ public class PatchController {
 		patch.validate();
 
 		final String logPath = destPath + System.getProperty("file.separator") + "patchLog.txt";
-		final StringBuilder result = new StringBuilder();
+		final StringBuilderUtil result = new StringBuilderUtil();
 		final LogFileUtil log = new LogFileUtil(logPath);
 		log.writeln("========================= " + projectName + " 패치 경로 =========================");
 
 		// patch file copy start!
 		final List<Path> srcFileList = patch.getCopyFileList(patch.getSrcPath());
-		result.append(patch.copySrcFile(srcFileList, log));
+		result.appendLine(patch.copySrcFile(srcFileList, log));
 
 		final List<Path> webFileList = patch.getCopyFileList(patch.getWebPath());
-		result.append(patch.copyWebFile(webFileList, log));
+		result.appendLine(patch.copyWebFile(webFileList, log));
 
 		if (webFileList.isEmpty() && srcFileList.isEmpty())
 			result.append("변경된 파일이 없습니다. 변경 기준일을 확인해주세요.");

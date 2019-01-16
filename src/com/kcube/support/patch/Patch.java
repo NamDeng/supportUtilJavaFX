@@ -20,19 +20,18 @@ import javax.xml.bind.ValidationException;
 
 import org.apache.commons.lang3.StringUtils;
 
-import com.kcube.support.converter.Converter;
 import com.kcube.support.util.AlertUtil;
+import com.kcube.support.util.CommandUtil;
 import com.kcube.support.util.FileUtil;
 import com.kcube.support.util.LogFileUtil;
 import com.kcube.support.util.StringBuilderUtil;
 
 public class Patch {
-	public static final String[] SOURCE_TYPE = { "ext", "app" };
-
 	private static final String SRC = "src";
 	private static final String WEB = "web";
 	private static final String CST = "cst";
 	private static final String BIN = "bin";
+	private static final String EXT = "ext";
 
 	private static final String WEB_INF = "WEB-INF";
 	private static final String CLASSES = "classes";
@@ -67,10 +66,10 @@ public class Patch {
 	 * @param sourceType
 	 */
 	private void init(final String sourceType) {
-		final String SrcPath = sourceType.equals(SOURCE_TYPE[0])
+		final String SrcPath = sourceType.equals(EXT)
 				? getPath(workspacePath, CST, this.projectName, SRC)
 				: getPath(workspacePath, this.projectName, SRC);
-		final String WebPath = sourceType.equals(SOURCE_TYPE[0])
+		final String WebPath = sourceType.equals(EXT)
 				? getPath(workspacePath, CST, this.projectName, WEB)
 				: getPath(workspacePath, this.projectName, WEB);
 		final String binPath = getPath(workspacePath, BIN);
@@ -133,8 +132,8 @@ public class Patch {
 	 *
 	 * [ src 파일 복사 규칙 ]
 	 * 1. java 파일명과 매칭되는 class 파일 복사
-	 * 2. properties 파일은 유니코드로 변경 후 파일 생성
-	 * 3. app 설정 파일인 .conf.xml 파일은 customize 밑으로 복사
+	 * 2. properties 파일 native2ascii 파일 생성
+	 * 3. app 설정 .conf.xml 파일은 customize 밑으로 복사
 	 * 4. 그외 파일 복사.
 	 * </pre>
 	 *
@@ -165,40 +164,24 @@ public class Patch {
 							if (Files.notExists(destParent)) {
 								Files.createDirectories(destParent);
 							}
-							// 확장자를 제외한 파일명 추출
-							final String splitFileName = fileName.substring(0, fileName.lastIndexOf("."));
-							// 추출한 파일명으로 정규식으로 class파일 binPath에서 찾아서 복사
-							final String regex = "(^(" + splitFileName + ")(.class))|(^(" + splitFileName + ")(\\$){1}[a-zA-Z1-9]*(.class))";
-							final Pattern pattern = Pattern.compile(regex);
-							final Path binParent = binPath.getParent();
-							Files.walk(binParent).forEach(new Consumer<Path>() {
 
-								@Override
-								public void accept(Path file) {
-									final String copyFileName = file.getFileName().toString();
-									final Matcher matcher = pattern.matcher(copyFileName);
-									if (matcher.find()) {
-										final Path dest = destParent.resolve(file.getFileName());
-										try {
-											Files.copy(file, dest, StandardCopyOption.REPLACE_EXISTING);
-											result.appendLine(dest + " 파일 복사 성공");
-
-											log.writeln(getPath(WEB_INF, CLASSES, relativePath.getParent().toString(), copyFileName));
-										} catch (Exception e) {
-											result.appendLine(dest + " 파일 복사 실패");
-										}
-									}
-								}
-							});
+							final String copyResult = copyClassFile(fileName, relativePath, destParent, log);
+							result.appendLine(copyResult);
 						} else if (FileUtil.checkExteionsion(classesPath.toString(), "properties")) {
 							if (Files.notExists(destParent)) {
 								Files.createDirectories(destParent);
 							}
 
-							Converter.convertToUnicodeFile(binPath.toFile(), classesPath.toFile());
-							result.appendLine(classesPath + " 파일 복사 성공");
+							CommandUtil command = new CommandUtil(binPath, classesPath);
+							try {
+								command.start();
 
-							log.writeln(getPath(WEB_INF, CLASSES, relativePath.toString()));
+								result.appendLine(classesPath + " 파일 복사 성공");
+								log.writeln(getPath(WEB_INF, CLASSES, relativePath.toString()));
+							} catch (IOException | InterruptedException e) {
+								e.printStackTrace();
+								result.appendLine(classesPath + " 파일 복사 실패. " + e.getMessage());
+							}
 						} else if (FileUtil.isAppConfXML(classesPath)) {
 							if (Files.notExists(getConfPath())) {
 								Files.createDirectories(getConfPath());
@@ -227,6 +210,49 @@ public class Patch {
 			}
 		});
 
+		return result.toString();
+	}
+
+	/**
+	 * 정규식에 매칭되는 class 파일을  복사
+	 *
+	 * @param fileName
+	 * @param relativePath
+	 * @param destParent
+	 * @param log
+	 * @return
+	 * @throws Exception
+	 */
+	String copyClassFile(final String fileName, final Path relativePath, final Path destParent,
+								final LogFileUtil log) throws Exception {
+
+		// 확장자를 제외한 파일명 추출
+		final String splitFileName = fileName.substring(0, fileName.lastIndexOf("."));
+		// 정규식으로 복사할 class파일 binPath에서 찾아서 복사
+		final String regex = "(^(" + splitFileName + ")(.class))|(^(" + splitFileName + ")(\\$){1}[a-zA-Z1-9]*(.class))";
+		final Pattern pattern = Pattern.compile(regex);
+		final Path binParent = binPath.getParent();
+
+		final StringBuilderUtil result = new StringBuilderUtil();
+		Files.walk(binParent).forEach(new Consumer<Path>() {
+
+			@Override
+			public void accept(Path sourceFile) {
+				final String copyFileName = sourceFile.getFileName().toString();
+				final Matcher matcher = pattern.matcher(copyFileName);
+				if (matcher.find()) {
+					final Path dest = destParent.resolve(sourceFile.getFileName());
+					try {
+						Files.copy(sourceFile, dest, StandardCopyOption.REPLACE_EXISTING);
+						result.appendLine(dest + " 파일 복사 성공");
+
+						log.writeln(getPath(WEB_INF, CLASSES, relativePath.getParent().toString(), copyFileName));
+					} catch (Exception e) {
+						result.appendLine(dest + " 파일 복사 실패");
+					}
+				}
+			}
+		});
 		return result.toString();
 	}
 
@@ -267,6 +293,8 @@ public class Patch {
 		});
 		return result.toString();
 	}
+
+
 
 	/**
 	 * 폼 입력 유효성 검사
