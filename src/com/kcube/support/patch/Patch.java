@@ -172,16 +172,13 @@ public class Patch {
 								Files.createDirectories(destParent);
 							}
 
-							CommandUtil command = new CommandUtil(binPath, classesPath);
-							try {
-								command.start();
+							final CommandUtil command = new CommandUtil(binPath, classesPath);
+							if(command.start() == false)
+								throw new Exception();
 
-								result.appendLine(classesPath + " 파일 복사 성공");
-								log.writeln(getPath(WEB_INF, CLASSES, relativePath.toString()));
-							} catch (IOException | InterruptedException e) {
-								e.printStackTrace();
-								result.appendLine(classesPath + " 파일 복사 실패. " + e.getMessage());
-							}
+							result.appendLine(classesPath + " 파일 복사 성공");
+
+							log.writeln(getPath(WEB_INF, CLASSES, relativePath.toString()));
 						} else if (FileUtil.isAppConfXML(classesPath)) {
 							if (Files.notExists(getConfPath())) {
 								Files.createDirectories(getConfPath());
@@ -192,7 +189,6 @@ public class Patch {
 							result.appendLine(confPath + " 파일 복사 성공");
 
 							log.writeln(getPath(WEB_INF, CLASSES, R5_APP, CUSTOMIZE, fileName));
-
 						} else {
 							if (Files.notExists(destParent)) {
 								Files.createDirectories(destParent);
